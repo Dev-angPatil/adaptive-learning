@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>PyAdapt - Lesson</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#e1e2eb",
+                        "on-secondary": "#263143",
+                        "primary-fixed-dim": "#acc7ff",
+                        "border": "#30363d",
+                        "secondary-container": "#3e495d",
+                        "tertiary-container": "#d37b02",
+                        "on-tertiary-fixed": "#2d1600",
+                        "on-primary-fixed": "#001a40",
+                        "inverse-on-surface": "#2e3037",
+                        "on-surface": "#e1e2eb",
+                        "success": "#22c55e",
+                        "outline": "#8c909e",
+                        "tertiary-fixed-dim": "#ffb873",
+                        "tertiary-fixed": "#ffdcbf",
+                        "primary": "#acc7ff",
+                        "on-secondary-fixed-variant": "#3c475a",
+                        "secondary-fixed": "#d8e3fb",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#32353c",
+                        "primary-fixed": "#d7e2ff",
+                        "surface-container-lowest": "#0b0e14",
+                        "primary-container": "#508ff8",
+                        "tertiary": "#ffb873",
+                        "on-primary": "#002f68",
+                        "inverse-primary": "#005bbf",
+                        "on-tertiary": "#4b2800",
+                        "surface-bright": "#373940",
+                        "secondary": "#bcc7de",
+                        "on-primary-fixed-variant": "#004492",
+                        "on-secondary-container": "#aeb9d0",
+                        "background": "#0f1117",
+                        "inverse-surface": "#e1e2eb",
+                        "secondary-fixed-dim": "#bcc7de",
+                        "surface-dim": "#11131a",
+                        "on-secondary-fixed": "#111c2d",
+                        "surface-container-high": "#272a31",
+                        "surface-container": "#1d2026",
+                        "on-surface-variant": "#c2c6d5",
+                        "on-primary-container": "#00285b",
+                        "on-error": "#690005",
+                        "outline-variant": "#424753",
+                        "surface-tint": "#acc7ff",
+                        "surface-variant": "#32353c",
+                        "warning": "#f59e0b",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-container": "#412200",
+                        "on-tertiary-fixed-variant": "#6a3b00",
+                        "danger": "#ef4444",
+                        "surface-container-low": "#191c22",
+                        "surface": "#161b22",
+                        "error": "#ffb4ab"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin": "32px",
+                        "sidebar-width": "64px",
+                        "stack-gap": "16px",
+                        "gutter": "24px",
+                        "content-max-width": "1200px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Geist"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-lg": ["Geist"],
+                        "body-lg": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "code-md": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "code-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex font-body-md text-body-md overflow-x-hidden selection:bg-primary selection:text-on-primary-fixed">
+    <!-- SideNavBar -->
+    <nav class="fixed left-0 top-0 h-full flex flex-col justify-between py-margin z-40 bg-surface-container-lowest dark:bg-surface-container-lowest w-sidebar-width border-r border-border dark:border-border">
+        <div class="flex flex-col items-center gap-6">
+            <!-- Brand -->
+            <div class="text-headline-md font-headline-md font-black text-primary dark:text-primary tracking-tighter mb-8" title="PyAdapt Python Learning">
+                P
+            </div>
+            <!-- Navigation Items -->
+            <!-- Dashboard -->
+            <a class="{% if active_tab == 'dashboard' %}text-primary dark:text-primary font-bold border-l-2 border-primary pl-2 opacity-100 scale-100 bg-surface-container-highest{% else %}text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors group{% endif %} flex flex-col items-center justify-center p-4 w-full" href="/" title="Dashboard">
+                <span class="material-symbols-outlined {% if active_tab == 'dashboard' %}text-primary{% else %}transition-transform group-hover:scale-110{% endif %}" {% if active_tab == 'dashboard' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>dashboard</span>
+            </a>
+            <!-- Current Lesson -->
+            <a class="{% if active_tab == 'lesson' %}text-primary dark:text-primary font-bold border-l-2 border-primary pl-2 opacity-100 scale-100 bg-surface-container-highest{% else %}text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors group{% endif %} flex flex-col items-center justify-center p-4 w-full" href="{% if current_focus.video_id %}/lesson/{{ current_focus.video_id }}{% else %}#{% endif %}" title="Current Lesson">
+                <span class="material-symbols-outlined {% if active_tab == 'lesson' %}text-primary{% else %}transition-transform group-hover:scale-110{% endif %}" {% if active_tab == 'lesson' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>auto_stories</span>
+            </a>
+            <!-- Progress -->
+            <a class="{% if active_tab == 'progress' %}text-primary dark:text-primary font-bold border-l-2 border-primary pl-2 opacity-100 scale-100 bg-surface-container-highest{% else %}text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors group{% endif %} flex flex-col items-center justify-center p-4 w-full" href="/progress" title="Progress">
+                <span class="material-symbols-outlined {% if active_tab == 'progress' %}text-primary{% else %}transition-transform group-hover:scale-110{% endif %}" {% if active_tab == 'progress' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>leaderboard</span>
+            </a>
+        </div>
+        <!-- Bottom Items -->
+        <div class="flex flex-col items-center">
+            <div class="mt-4 p-2 rounded-full border border-border overflow-hidden">
+                <img alt="User Profile Avatar" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBScg0RsoWZXW-6m4WSuoSn5twpmaUHFITEJRHRwwVOBczNj1Ti_yCm4MfFKqzwGL8agK0k_laryB3OpRHMgsFhoF-LR7WlnIfi5qWW7u1SuPPi9ILV-QJdZI3yDmF_-ft_e5E2w-UfEb2DjZkJozC8nX3v2uKmrtHjRfftyOFB0Ie5O4eW2M00ECWf2mkPEzkbbLLu2bG8DfsnpFjNwgbLPqKHh6n3cGrpCKRvOvZ21K_unxguO9D2K6JmU0Lffi52arYdv9Cbk_k"/>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Workspace -->
+    <div class="flex-1 ml-sidebar-width flex flex-col min-h-screen w-[calc(100%-64px)]">
+        <!-- Header -->
+        <header class="bg-background border-b border-border flex justify-between items-center h-16 px-gutter shrink-0">
+            <div class="flex items-center gap-4">
+                <h1 class="text-headline-md font-headline-md text-primary font-bold">{{ video.topic_name }}</h1>
+                <span class="text-on-surface-variant material-symbols-outlined text-sm">chevron_right</span>
+                <span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest">{{ video.subtopic }}</span>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <main class="flex-1 p-gutter flex flex-col items-center overflow-y-auto">
+            <div class="w-full max-w-5xl mt-6 mb-16">
+                <!-- Bento Two Column Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+                    <!-- Left: Video Embed Frame (Span 8) -->
+                    <div class="lg:col-span-8 flex flex-col gap-stack-gap">
+                        <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-border bg-surface-container-lowest shadow-2xl">
+                            {% if yt_video_id %}
+                            <iframe src="https://www.youtube.com/embed/{{ yt_video_id }}?rel=0&autoplay=0" class="absolute inset-0 w-full h-full" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            {% else %}
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+                                <span class="material-symbols-outlined text-5xl text-outline mb-2">videocam_off</span>
+                                <span class="text-on-surface-variant">No Video URL available.</span>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Video Title / Duration -->
+                        <div class="flex justify-between items-center mt-4">
+                            <div>
+                                <h2 class="text-headline-md font-headline-md font-bold text-on-surface">{{ video.subtopic }}</h2>
+                                <p class="text-code-md font-code-md text-primary mt-1">Topic: {{ video.topic_name }} &bull; Order Index: #{{ video.order_in_topic }}</p>
+                            </div>
+                            <div class="flex items-center gap-2 bg-surface-container border border-border px-4 py-2 rounded-lg">
+                                <span class="material-symbols-outlined text-on-surface-variant">schedule</span>
+                                <span class="font-label-sm text-label-sm text-on-surface">{{ video.duration_minutes }} Min</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Metadata & Details (Span 4) -->
+                    <div class="lg:col-span-4 flex flex-col gap-stack-gap">
+                        <!-- Difficulty Cards -->
+                        <div class="bg-surface border border-border rounded-xl p-5 shadow-sm">
+                            <h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest mb-3">Topic Difficulty</h3>
+                            <div class="flex items-center gap-2">
+                                <span class="font-label-sm text-label-sm px-3 py-1 rounded border 
+                                    {% if video.difficulty == 1 %}border-success text-success bg-success/10
+                                    {% elif video.difficulty == 2 %}border-warning text-warning bg-warning/10
+                                    {% else %}border-danger text-danger bg-danger/10{% endif %}">
+                                    {% if video.difficulty == 1 %}Beginner (Level 1)
+                                    {% elif video.difficulty == 2 %}Intermediate (Level 2)
+                                    {% else %}Advanced (Level 3){% endif %}
+                                </span>
+                                <span class="font-label-sm text-label-sm px-3 py-1 rounded border border-primary text-primary bg-primary/10">
+                                    Depth: {{ video.depth_level }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Lesson Description -->
+                        <div class="bg-surface border border-border rounded-xl p-5 shadow-sm">
+                            <h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest mb-3">Description</h3>
+                            <p class="text-body-md font-body-md text-on-surface-variant leading-relaxed">{{ video.description }}</p>
+                        </div>
+
+                        <!-- Prerequisites -->
+                        <div class="bg-surface border border-border rounded-xl p-5 shadow-sm">
+                            <h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest mb-3">Prerequisites</h3>
+                            {% if video.prerequisites %}
+                            <ul class="flex flex-col gap-2">
+                                {% for prereq in video.prerequisites %}
+                                <li class="flex items-center gap-2 text-code-md font-code-md text-on-surface-variant">
+                                    <span class="material-symbols-outlined text-success text-[18px]">verified</span>
+                                    <span>{{ prereq }}</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                            <div class="flex items-center gap-2 text-code-md font-code-md text-on-surface-variant">
+                                <span class="material-symbols-outlined text-outline-variant text-[18px]">info</span>
+                                <span>No prerequisites required for this introductory session.</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Complete and Start Quiz CTA -->
+                <div class="mt-margin pt-6 border-t border-border flex justify-end">
+                    <form action="/lesson/{{ video.id }}/complete" method="POST">
+                        <button type="submit" class="bg-primary text-on-primary-fixed font-label-sm text-label-sm font-bold uppercase tracking-wider px-10 py-4 rounded hover:bg-primary-fixed transition-all flex items-center gap-3 shadow-[0_4px_14px_rgba(172,199,255,0.2)]">
+                            Mark Complete & Start Quiz
+                            <span class="material-symbols-outlined text-[20px]">assignment_turned_in</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
