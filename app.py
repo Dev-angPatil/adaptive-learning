@@ -123,7 +123,7 @@ def dashboard():
         prereq_met = True
         if idx > 0:
             prev_topic = topics[idx - 1]
-            if prev_topic.mastery_percentage < 80.0:
+            if prev_topic.mastery_percentage < 40.0:
                 prereq_met = False
 
         status = "Locked"
@@ -137,13 +137,26 @@ def dashboard():
         else:
             status = "Unlocked"
 
+        # Populate videos list for course rendering
+        videos_list = []
+        for v in videos:
+            session_record = db_session.query(LearningSession).filter_by(video_id=v.id).first()
+            watched = session_record.watched if session_record else False
+            videos_list.append({
+                "id": v.id,
+                "subtopic": v.subtopic,
+                "duration_minutes": v.duration_minutes,
+                "watched": watched
+            })
+
         nodes.append({
             "id": topic.id,
             "name": topic.name,
             "description": topic.description or f"Learn core concepts about {topic.name}.",
             "difficulty": topic.difficulty,
             "mastery_percentage": int(topic.mastery_percentage),
-            "status": status
+            "status": status,
+            "videos": videos_list
         })
 
     # 4. Get active lesson focus
@@ -211,8 +224,99 @@ def lesson_complete(video_id):
     session.pop("quiz_answers", None)
     session.pop("quiz_index", None)
 
-    # Redirect to quiz for this topic
-    return redirect(url_for("quiz", topic_id=video.topic_id))
+    # Redirect to video-specific quiz
+    return redirect(url_for("quiz_video", video_id=video_id))
+
+@app.route("/quiz/video/<int:video_id>", methods=["GET", "POST"])
+def quiz_video(video_id):
+    """
+    Video-specific quiz: 3 questions unique to this video.
+    """
+    video = db_session.get(Video, video_id)
+    if not video:
+        return redirect(url_for("dashboard"))
+
+    topic = db_session.get(Topic, video.topic_id)
+    quiz_session_key = f"quiz_video_{video_id}"
+
+    # Initialize quiz session for this specific video
+    if quiz_session_key not in session:
+        questions = (
+            db_session.query(QuizQuestion)
+            .filter_by(video_id=video_id)
+            .order_by(QuizQuestion.id)
+            .all()
+        )
+        # Fallback to topic questions if somehow no video-specific ones exist
+        if not questions:
+            questions = (
+                db_session.query(QuizQuestion)
+                .filter_by(topic_id=video.topic_id)
+                .limit(3)
+                .all()
+            )
+        if not questions:
+            flash("No quiz questions available for this video yet.", "warning")
+            return redirect(url_for("dashboard"))
+
+        session[quiz_session_key] = [q.id for q in questions]
+        session[f"{quiz_session_key}_answers"] = {}
+        session[f"{quiz_session_key}_index"] = 0
+
+    question_ids = session[quiz_session_key]
+    q_index = int(request.args.get("q", session.get(f"{quiz_session_key}_index", 0)))
+
+    if q_index >= len(question_ids):
+        return redirect(url_for("dashboard"))
+
+    session[f"{quiz_session_key}_index"] = q_index
+
+    if request.method == "POST":
+        selected = request.form.get("selected_option")
+        if not selected:
+            flash("Please select an option before proceeding.", "warning")
+            return redirect(url_for("quiz_video", video_id=video_id, q=q_index))
+
+        q_id_str = str(question_ids[q_index])
+        answers = session.get(f"{quiz_session_key}_answers", {})
+        answers[q_id_str] = selected
+        session[f"{quiz_session_key}_answers"] = answers
+
+        if q_index + 1 >= len(question_ids):
+            # Grade the video quiz
+            submission_dict = {int(k): v for k, v in answers.items()}
+            results, recommendation = grade_quiz_submission(db_session, video.topic_id, submission_dict)
+
+            session["last_results"] = results
+            session["last_recommendation"] = recommendation
+
+            # Clean up video quiz session
+            session.pop(quiz_session_key, None)
+            session.pop(f"{quiz_session_key}_answers", None)
+            session.pop(f"{quiz_session_key}_index", None)
+
+            return redirect(url_for("results"))
+        else:
+            return redirect(url_for("quiz_video", video_id=video_id, q=q_index + 1))
+
+    # GET: render the quiz question
+    question = db_session.get(QuizQuestion, question_ids[q_index])
+    progress_percent = int((q_index / len(question_ids)) * 100)
+    current_focus = get_current_focus()
+
+    return render_template(
+        "quiz.html",
+        topic=topic,
+        question=question,
+        q_index=q_index,
+        q_count=len(question_ids),
+        progress_percent=progress_percent,
+        is_last=(q_index + 1 == len(question_ids)),
+        current_focus=current_focus,
+        video=video,
+        active_tab="lesson"
+    )
+
 
 
 @app.route("/quiz/<int:topic_id>", methods=["GET", "POST"])

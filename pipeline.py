@@ -136,15 +136,9 @@ def extract_json_from_text(text: str) -> str:
     return text.strip()
 
 
-def query_gemini_for_metadata(video: Dict[str, Any]) -> Dict[str, Any]:
+def query_gemini_for_all_videos(raw_videos: List[Dict[str, Any]]) -> Dict[str, Any]:
     """
-    Send video details to Gemini API to classify and generate quiz questions.
-
-    Args:
-        video (Dict[str, Any]): Video details dict.
-
-    Returns:
-        Dict[str, Any]: Categorized metadata + quiz questions.
+    Send all video details to Gemini API to classify into topics and generate questions in a single request.
     """
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
@@ -153,54 +147,62 @@ def query_gemini_for_metadata(video: Dict[str, Any]) -> Dict[str, Any]:
     import google.generativeai as genai
     genai.configure(api_key=api_key)
 
+    # Prepare minimal input for Gemini to save tokens
+    videos_input = []
+    for idx, v in enumerate(raw_videos):
+        videos_input.append({
+            "id": idx,
+            "title": v['title'],
+            "duration_minutes": v['duration_minutes']
+        })
+
     prompt = f"""
-You are a Python curriculum design assistant. You are given a video title, description, and duration from a YouTube playlist.
-Your job is to analyze this video and classify it into our adaptive learning taxonomy, as well as generate quiz questions.
+You are a Python curriculum design assistant. You are given a list of videos from a Python programming tutorial playlist.
+Your job is to analyze these videos, group them into logical, high-level learning Topics/Modules, and generate quiz questions for each Topic.
 
-Input Video Metadata:
-Title: {video['title']}
-Description: {video['description']}
-Duration: {video['duration_minutes']} minutes
+Input Videos:
+{json.dumps(videos_input, indent=2)}
 
-Your output MUST be a valid JSON object matching this structure:
+Your output MUST be a valid JSON object matching this structure EXACTLY:
 {{
-  "topic_name": "string",
-  "subtopic": "string",
-  "difficulty": 1 | 2 | 3,
-  "depth_level": 1 | 2 | 3,
-  "duration_minutes": {video['duration_minutes']},
-  "prerequisites": ["string"],
-  "order_in_topic": 1,
-  "description": "string",
-  "quiz_questions": [
+  "topics": [
     {{
-      "question_text": "string",
-      "option_a": "string",
-      "option_b": "string",
-      "option_c": "string",
-      "option_d": "string",
-      "correct_answer": "A" | "B" | "C" | "D",
-      "difficulty": 1 | 2 | 3
+      "name": "Topic Name",
+      "description": "Clean developer description of this topic.",
+      "difficulty": 1 | 2 | 3,
+      "quiz_questions": [
+        {{
+          "question_text": "Multiple choice question testing a concept in this topic?",
+          "option_a": "Choice A",
+          "option_b": "Choice B",
+          "option_c": "Choice C",
+          "option_d": "Choice D",
+          "correct_answer": "A" | "B" | "C" | "D",
+          "difficulty": 1 | 2 | 3
+        }}
+      ]
+    }}
+  ],
+  "video_mappings": [
+    {{
+      "video_id": 0,
+      "topic_name": "Topic Name",
+      "subtopic": "Specific subtopic of the video",
+      "difficulty": 1 | 2 | 3,
+      "depth_level": 1 | 2 | 3,
+      "order_in_topic": 1
     }}
   ]
 }}
 
 Guidelines for fields:
-1. `topic_name`: The broad category this video belongs to (e.g. "Basic Syntax", "Functions", "Lists & Tuples", "Classes (OOP)"). Keep names consistent across different videos.
-2. `subtopic`: A specific, clear name for this video's focus (e.g., "List Slicing").
-3. `difficulty`: 1 (Beginner), 2 (Intermediate), 3 (Advanced).
-4. `depth_level`: 1 (Foundational concept), 2 (Practical application), 3 (Advanced/nuanced edge-cases).
-5. `duration_minutes`: Use the provided duration or estimate if necessary.
-6. `prerequisites`: List of subtopic names or topic names that must be learned BEFORE watching this video. If none, return an empty array [].
-7. `order_in_topic`: The logical 1-based order index of this video within its topic (e.g. 1 for the first introductory video, 2 for the next, etc.).
-8. `description`: A clean, developer-focused 1-2 sentence description of what the video covers.
-9. `quiz_questions`: Generate multiple-choice quiz questions based on the content. The number of questions should vary by difficulty:
-   - 3 questions if difficulty is 1 (Beginner)
-   - 4 questions if difficulty is 2 (Intermediate)
-   - 5 questions if difficulty is 3 (Advanced)
-   Each question must have exactly 4 choices (option_a, option_b, option_c, option_d) and a single correct option index ('A', 'B', 'C', or 'D'). Questions must test the concepts taught. Make sure option keys are correct.
+1. `topic_name` / topic `name`: Group all videos into about 6-10 broad, cohesive Python modules (e.g. "Basic Syntax", "Control Flow", "Data Structures", "Functions", "OOP"). Keep topic names consistent across mappings.
+2. `difficulty`: 1 (Beginner), 2 (Intermediate), 3 (Advanced).
+3. `depth_level`: 1 (Foundational), 2 (Application), 3 (Advanced).
+4. `order_in_topic`: 1-based index representing the logical learning order of the video within its topic.
+5. Generate exactly 5 multiple choice questions for each topic listed in the `topics` array. Make sure the option keys are correct and correct_answer is one of A, B, C, or D.
 
-Return ONLY the JSON string. Do not include any conversational filler, markdown formatting (other than a code block wrapper if necessary, but raw JSON is preferred), or text outside the JSON object.
+Return ONLY the raw JSON string. Do not include any markdown styling, conversational filler, or text outside the JSON object.
 """
 
     model = genai.GenerativeModel(
@@ -216,42 +218,219 @@ Return ONLY the JSON string. Do not include any conversational filler, markdown 
     except json.JSONDecodeError as e:
         print(f"Error decoding JSON response from Gemini: {e}")
         print(f"Raw output: {content}")
-        # Return fallback metadata if parsing fails
-        return {
-            "topic_name": "General Python",
-            "subtopic": video['title'],
+        # Fallback return structure
+        fallback_questions = [
+            {
+                "question_text": "Which of the following is a key feature of Python programming?",
+                "option_a": "Dynamic typing",
+                "option_b": "Manual memory management",
+                "option_c": "Compilation to machine code only",
+                "option_d": "None of the above",
+                "correct_answer": "A",
+                "difficulty": 1
+            }
+        ] * 5
+        
+        fallback_topics = [{
+            "name": "General Python",
+            "description": "General topics and fundamentals of Python.",
             "difficulty": 1,
-            "depth_level": 1,
-            "duration_minutes": video['duration_minutes'],
-            "prerequisites": [],
-            "order_in_topic": 1,
-            "description": video['description'][:200],
-            "quiz_questions": [
-                {
-                    "question_text": f"What is the focus of the video '{video['title']}'?",
-                    "option_a": "Python Syntax",
-                    "option_b": "Data Engineering",
-                    "option_c": "Web Development",
-                    "option_d": "None of the above",
-                    "correct_answer": "A",
-                    "difficulty": 1
-                }
-            ]
+            "quiz_questions": fallback_questions
+        }]
+        
+        fallback_mappings = []
+        for idx, v in enumerate(raw_videos):
+            fallback_mappings.append({
+                "video_id": idx,
+                "topic_name": "General Python",
+                "subtopic": v['title'],
+                "difficulty": 1,
+                "depth_level": 1,
+                "order_in_topic": idx + 1
+            })
+            
+        return {
+            "topics": fallback_topics,
+            "video_mappings": fallback_mappings
         }
 
 
-def save_to_database(metadata_list: List[Dict[str, Any]], youtube_urls: List[str], session) -> None:
+def generate_fallback_curriculum(raw_videos: List[Dict[str, Any]]) -> Dict[str, Any]:
     """
-    Save the extracted metadata and quiz questions to SQLite.
+    Generates a structured Python course from video titles using a hybrid
+    keyword + index-aware classification strategy.
+    """
+    topics_definitions = [
+        {"name": "Introduction & Setup", "description": "Getting started with Python installation, IDE setup, and basics.", "difficulty": 1},
+        {"name": "Variables & Basic Operators", "description": "Working with variables, fundamental data types, and arithmetic/logical operators.", "difficulty": 1},
+        {"name": "Control Flow & Decision Making", "description": "Using conditionals (if-else) and loops (for, while) to control execution flow.", "difficulty": 1},
+        {"name": "Python Data Structures", "description": "Lists, Tuples, Sets, and Dictionaries in Python.", "difficulty": 2},
+        {"name": "Functions & Modular Coding", "description": "Defining functions, arguments, return values, scope, and modules.", "difficulty": 2},
+        {"name": "Object-Oriented Programming (OOP)", "description": "Understanding classes, objects, inheritance, polymorphism, and encapsulation.", "difficulty": 3},
+        {"name": "File I/O & Exceptions", "description": "Reading and writing files, and handling runtime exceptions safely.", "difficulty": 2},
+        {"name": "Advanced Python Concepts", "description": "Decorators, generators, lambda functions, and other advanced utilities.", "difficulty": 3}
+    ]
 
-    Args:
-        metadata_list (List[Dict[str, Any]]): Metadata lists.
-        youtube_urls (List[str]): Original YouTube URLs.
-        session: SQLAlchemy session.
+    # --- FIXED: Correct answers verified for every question ---
+    topic_questions = {
+        "Introduction & Setup": [
+            {"question_text": "Who created Python?", "option_a": "Guido van Rossum", "option_b": "James Gosling", "option_c": "Dennis Ritchie", "option_d": "Bjarne Stroustrup", "correct_answer": "A", "difficulty": 1},
+            {"question_text": "Which extension is used to save Python files?", "option_a": ".pyt", "option_b": ".pt", "option_c": ".py", "option_d": ".p", "correct_answer": "C", "difficulty": 1},
+            {"question_text": "Which of the following is an IDE commonly used for Python?", "option_a": "Eclipse", "option_b": "PyCharm", "option_c": "IntelliJ", "option_d": "Xcode", "correct_answer": "B", "difficulty": 1},
+            {"question_text": "Is Python a compiled or interpreted language?", "option_a": "Mainly compiled", "option_b": "Strictly machine binary", "option_c": "None of the above", "option_d": "Mainly interpreted", "correct_answer": "D", "difficulty": 1},
+            {"question_text": "How do you display text in Python?", "option_a": "echo()", "option_b": "system.out.println()", "option_c": "printf()", "option_d": "print()", "correct_answer": "D", "difficulty": 1}
+        ],
+        "Variables & Basic Operators": [
+            {"question_text": "Which of the following is a valid variable name in Python?", "option_a": "2myvar", "option_b": "my-var", "option_c": "my_var", "option_d": "my var", "correct_answer": "C", "difficulty": 1},
+            {"question_text": "What is the output of print(2 ** 3)?", "option_a": "6", "option_b": "9", "option_c": "5", "option_d": "8", "correct_answer": "D", "difficulty": 1},
+            {"question_text": "What type is returned by input() by default?", "option_a": "int", "option_b": "float", "option_c": "str", "option_d": "list", "correct_answer": "C", "difficulty": 1},
+            {"question_text": "What does the modulo operator % do?", "option_a": "Performs exponentiation", "option_b": "Returns division remainder", "option_c": "Divides and rounds down", "option_d": "Calculates percentage", "correct_answer": "B", "difficulty": 1},
+            {"question_text": "What is the output of print(10 // 3)?", "option_a": "3.333", "option_b": "4", "option_c": "1", "option_d": "3", "correct_answer": "D", "difficulty": 1}
+        ],
+        "Control Flow & Decision Making": [
+            {"question_text": "Which keyword is used for decision-making statement branches in Python?", "option_a": "elseif", "option_b": "else if", "option_c": "switch", "option_d": "elif", "correct_answer": "D", "difficulty": 1},
+            {"question_text": "How do you start an infinite loop in Python?", "option_a": "for (;;)", "option_b": "while True:", "option_c": "loop forever", "option_d": "while 1 < 0:", "correct_answer": "B", "difficulty": 1},
+            {"question_text": "Which statement terminates the current loop immediately?", "option_a": "continue", "option_b": "pass", "option_c": "break", "option_d": "return", "correct_answer": "C", "difficulty": 1},
+            {"question_text": "What is the output of list(range(3))?", "option_a": "1, 2, 3", "option_b": "0, 1, 2, 3", "option_c": "0, 1, 2", "option_d": "1, 2", "correct_answer": "C", "difficulty": 1},
+            {"question_text": "Which statement skips the rest of the current loop iteration?", "option_a": "break", "option_b": "continue", "option_c": "pass", "option_d": "exit", "correct_answer": "B", "difficulty": 1}
+        ],
+        "Python Data Structures": [
+            {"question_text": "How do you create an empty list in Python?", "option_a": "list()", "option_b": "[]", "option_c": "Both A and B are correct", "option_d": "{}", "correct_answer": "C", "difficulty": 1},
+            {"question_text": "Which collection structure is ordered, indexable, and immutable?", "option_a": "List", "option_b": "Tuple", "option_c": "Set", "option_d": "Dictionary", "correct_answer": "B", "difficulty": 2},
+            {"question_text": "Which method adds an item to the end of a list?", "option_a": "add()", "option_b": "insert()", "option_c": "extend()", "option_d": "append()", "correct_answer": "D", "difficulty": 1},
+            {"question_text": "Which data structure guarantees unique values?", "option_a": "List", "option_b": "Tuple", "option_c": "Set", "option_d": "Dict", "correct_answer": "C", "difficulty": 2},
+            {"question_text": "How do you access the value of key 'name' in dictionary 'd'? (pick most complete answer)", "option_a": "d.name", "option_b": "d['name'] only", "option_c": "d.get('name') only", "option_d": "Both d['name'] and d.get('name')", "correct_answer": "D", "difficulty": 2}
+        ],
+        "Functions & Modular Coding": [
+            {"question_text": "Which keyword is used to declare a function in Python?", "option_a": "func", "option_b": "function", "option_c": "def", "option_d": "lambda", "correct_answer": "C", "difficulty": 1},
+            {"question_text": "What is a lambda function?", "option_a": "A function that has no parameters", "option_b": "An anonymous single-line function", "option_c": "A recursive function", "option_d": "A function in math library", "correct_answer": "B", "difficulty": 2},
+            {"question_text": "How do you import a module 'math' in Python?", "option_a": "using math", "option_b": "include math", "option_c": "require math", "option_d": "import math", "correct_answer": "D", "difficulty": 1},
+            {"question_text": "What does *args represent in a function definition parameter list?", "option_a": "Variable length keyword arguments", "option_b": "Pointer parameters", "option_c": "Variable length positional arguments", "option_d": "Default argument dictionary", "correct_answer": "C", "difficulty": 2},
+            {"question_text": "What does **kwargs represent in a function definition parameter list?", "option_a": "Variable length positional arguments", "option_b": "Variable length keyword arguments", "option_c": "Pointer parameters", "option_d": "List arguments", "correct_answer": "B", "difficulty": 2}
+        ],
+        "Object-Oriented Programming (OOP)": [
+            {"question_text": "Which keyword is used to create a class in Python?", "option_a": "def", "option_b": "struct", "option_c": "object", "option_d": "class", "correct_answer": "D", "difficulty": 1},
+            {"question_text": "What is the Python constructor method called?", "option_a": "__new__", "option_b": "__init__", "option_c": "construct", "option_d": "class_name", "correct_answer": "B", "difficulty": 2},
+            {"question_text": "What represents the current instance of a class in class methods?", "option_a": "this", "option_b": "object", "option_c": "self", "option_d": "inst", "correct_answer": "C", "difficulty": 1},
+            {"question_text": "Which concept allows a child class to inherit attributes from a parent class?", "option_a": "Encapsulation", "option_b": "Polymorphism", "option_c": "Abstraction", "option_d": "Inheritance", "correct_answer": "D", "difficulty": 2},
+            {"question_text": "How do you call a parent constructor from a child class constructor?", "option_a": "parent.__init__()", "option_b": "this.__init__()", "option_c": "super().__init__()", "option_d": "None of the above", "correct_answer": "C", "difficulty": 2}
+        ],
+        "File I/O & Exceptions": [
+            {"question_text": "Which block is used to catch and handle exceptions in Python?", "option_a": "catch", "option_b": "except", "option_c": "error", "option_d": "finally", "correct_answer": "B", "difficulty": 1},
+            {"question_text": "Which built-in function is used to open files in Python?", "option_a": "file()", "option_b": "read()", "option_c": "load()", "option_d": "open()", "correct_answer": "D", "difficulty": 1},
+            {"question_text": "Which file mode is used to write to a file, replacing its contents?", "option_a": "'r'", "option_b": "'w'", "option_c": "'a'", "option_d": "'x'", "correct_answer": "B", "difficulty": 1},
+            {"question_text": "What is the purpose of the 'finally' block?", "option_a": "Executes clean-up code regardless of exceptions", "option_b": "Executes only if no exceptions occur", "option_c": "Handles specific type of errors", "option_d": "Terminates the program", "correct_answer": "A", "difficulty": 2},
+            {"question_text": "What statement raises an exception manually?", "option_a": "throw", "option_b": "except", "option_c": "raise", "option_d": "assert", "correct_answer": "C", "difficulty": 2}
+        ],
+        "Advanced Python Concepts": [
+            {"question_text": "What is a generator in Python?", "option_a": "A script that compiles C programs", "option_b": "A mathematical random function", "option_c": "A function that yields values on demand using 'yield'", "option_d": "An engine that compiles Python to EXE", "correct_answer": "C", "difficulty": 3},
+            {"question_text": "What is a decorator in Python?", "option_a": "A function that modifies the behavior of another function", "option_b": "A design pattern tool for UI styling", "option_c": "A tag used for formatting output", "option_d": "A class method constructor", "correct_answer": "A", "difficulty": 3},
+            {"question_text": "Which of the following is a list comprehension?", "option_a": "(x for x in range(5))", "option_b": "[x for x in range(5)]", "option_c": "{x for x in range(5)}", "option_d": "list(range(5))", "correct_answer": "B", "difficulty": 2},
+            {"question_text": "What does a lambda function return?", "option_a": "None", "option_b": "A list of values", "option_c": "A generator object", "option_d": "The result of its single expression", "correct_answer": "D", "difficulty": 2},
+            {"question_text": "Which keyword is used to yield values in a generator?", "option_a": "return", "option_b": "give", "option_c": "yield", "option_d": "output", "correct_answer": "C", "difficulty": 3}
+        ]
+    }
+
+    # Add quiz questions to the topics definitions
+    topics = []
+    for topic_def in topics_definitions:
+        topic_name = topic_def["name"]
+        topics.append({
+            "name": topic_name,
+            "description": topic_def["description"],
+            "difficulty": topic_def["difficulty"],
+            "quiz_questions": topic_questions.get(topic_name, [])
+        })
+
+    # --- FIXED: Index-aware + keyword hybrid classifier ---
+    # Curriculum sequence ranges for the Telusko playlist (101 videos, 0-indexed)
+    # These boundaries are heuristic but curriculum-logical:
+    #   0-9   → Intro & Setup (first 10: orientation, what is Python)
+    #   10-19 → Variables & Basic Operators
+    #   20-34 → Control Flow & Decision Making
+    #   35-49 → Python Data Structures
+    #   50-63 → Functions & Modular Coding
+    #   64-74 → OOP
+    #   75-84 → File I/O & Exceptions
+    #   85+   → Advanced Python Concepts
+    INDEX_TOPIC_MAP = [
+        (0,   9,  "Introduction & Setup"),
+        (10,  19, "Variables & Basic Operators"),
+        (20,  34, "Control Flow & Decision Making"),
+        (35,  49, "Python Data Structures"),
+        (50,  63, "Functions & Modular Coding"),
+        (64,  74, "Object-Oriented Programming (OOP)"),
+        (75,  84, "File I/O & Exceptions"),
+        (85, 999, "Advanced Python Concepts"),
+    ]
+
+    DIFFICULTY_BY_TOPIC = {
+        "Introduction & Setup": 1,
+        "Variables & Basic Operators": 1,
+        "Control Flow & Decision Making": 1,
+        "Python Data Structures": 2,
+        "Functions & Modular Coding": 2,
+        "Object-Oriented Programming (OOP)": 3,
+        "File I/O & Exceptions": 2,
+        "Advanced Python Concepts": 3,
+    }
+
+    def classify_video(idx: int, title: str, description: str) -> str:
+        """Hybrid: keyword takes priority over index range for specific topics."""
+        title_lower = title.lower()
+        desc_lower = (description or "").lower()
+        combined = title_lower + " " + desc_lower
+
+        # Keyword-priority overrides (specific enough to be reliable)
+        if any(w in combined for w in ["abstract class", "inheritance", "polymorphism", "encapsulation", "__init__", "class method", "dunder", "magic method"]):
+            return "Object-Oriented Programming (OOP)"
+        if any(w in combined for w in ["try:", "except:", "exception", "try except", "file read", "file write", "open(", "with open"]):
+            return "File I/O & Exceptions"
+        if any(w in combined for w in ["decorator", "generator", "yield", "lambda", "fastapi", "django", "flask", "socket programming", "linear search", "database connection"]):
+            return "Advanced Python Concepts"
+        if any(w in combined for w in ["dictionary", "dict ", "list comprehension", "tuple", "set in python", "data structure", "zip function"]):
+            return "Python Data Structures"
+        if any(w in combined for w in ["*args", "**kwargs", "recursion", "scope", "module import", "def ", "function in python"]):
+            return "Functions & Modular Coding"
+
+        # Fall through to index-based classification
+        for lo, hi, topic_name in INDEX_TOPIC_MAP:
+            if lo <= idx <= hi:
+                return topic_name
+        return "Advanced Python Concepts"
+
+    video_mappings = []
+    from collections import defaultdict
+    topic_counters: dict = defaultdict(int)
+
+    for idx, v in enumerate(raw_videos):
+        topic_name = classify_video(idx, v["title"], v.get("description", ""))
+        difficulty = DIFFICULTY_BY_TOPIC.get(topic_name, 1)
+        topic_counters[topic_name] += 1
+
+        video_mappings.append({
+            "video_id": idx,
+            "topic_name": topic_name,
+            "subtopic": v["title"].split("|")[0].strip(),
+            "difficulty": difficulty,
+            "depth_level": difficulty,
+            "order_in_topic": topic_counters[topic_name]
+        })
+
+    return {
+        "topics": topics,
+        "video_mappings": video_mappings
+    }
+
+
+
+def save_to_database(topics: List[Dict[str, Any]], video_mappings: List[Dict[str, Any]], raw_videos: List[Dict[str, Any]], session) -> None:
+    """
+    Save the batch extracted topics and mapped videos to SQLite.
     """
     print("Saving pipeline results to database...")
 
-    # Clear existing to avoid duplicate conflicts if running fresh
+    # Clear existing to avoid duplicate conflicts
     session.query(QuizAttempt).delete()
     session.query(LearningSession).delete()
     session.query(QuizQuestion).delete()
@@ -261,38 +440,81 @@ def save_to_database(metadata_list: List[Dict[str, Any]], youtube_urls: List[str
 
     topic_cache = {}
 
-    for idx, meta in enumerate(metadata_list):
-        topic_name = meta.get("topic_name", "General Python")
-        
-        # 1. Create topic if it does not exist
+    # 1. Create all topics
+    for t_data in topics:
+        topic_name = t_data.get("name", "General Python")
         if topic_name not in topic_cache:
-            topic = session.query(Topic).filter_by(name=topic_name).first()
-            if not topic:
-                topic = Topic(
-                    name=topic_name,
-                    description=f"Core concepts about {topic_name}.",
-                    difficulty=meta.get("difficulty", 1),
-                    mastery_percentage=0.0
-                )
-                session.add(topic)
-                session.flush()
+            topic = Topic(
+                name=topic_name,
+                description=t_data.get("description") or f"Core concepts about {topic_name}.",
+                difficulty=t_data.get("difficulty", 1),
+                mastery_percentage=0.0
+            )
+            session.add(topic)
+            session.flush()
             topic_cache[topic_name] = topic
-        else:
-            topic = topic_cache[topic_name]
 
-        # 2. Add video
+            # Add quiz questions for this topic
+            questions = t_data.get("quiz_questions", [])
+            for q in questions:
+                question = QuizQuestion(
+                    question_text=q.get("question_text", ""),
+                    option_a=q.get("option_a", ""),
+                    option_b=q.get("option_b", ""),
+                    option_c=q.get("option_c", ""),
+                    option_d=q.get("option_d", ""),
+                    correct_answer=q.get("correct_answer", "A"),
+                    difficulty=q.get("difficulty", 1),
+                    topic_id=topic.id
+                )
+                session.add(question)
+            session.flush()
+
+    # Make sure we have a fallback General Python topic if any video mapped to it but it was not created
+    if "General Python" not in topic_cache:
+        general_topic = Topic(
+            name="General Python",
+            description="General topics and fundamentals of Python.",
+            difficulty=1,
+            mastery_percentage=0.0
+        )
+        session.add(general_topic)
+        session.flush()
+        topic_cache["General Python"] = general_topic
+
+    # Create mapping of video_id (index in raw_videos) to mapping metadata
+    mappings_by_id = {m["video_id"]: m for m in video_mappings}
+
+    # 2. Add all videos
+    for idx, raw_v in enumerate(raw_videos):
+        mapping = mappings_by_id.get(idx, {})
+        topic_name = mapping.get("topic_name", "General Python")
+        if topic_name not in topic_cache:
+            # Fallback if topic wasn't declared in 'topics' list
+            topic = Topic(
+                name=topic_name,
+                description=f"Core concepts about {topic_name}.",
+                difficulty=mapping.get("difficulty", 1),
+                mastery_percentage=0.0
+            )
+            session.add(topic)
+            session.flush()
+            topic_cache[topic_name] = topic
+            
+        topic = topic_cache[topic_name]
+
         video = Video(
             topic_name=topic_name,
-            subtopic=meta.get("subtopic", "Subtopic"),
-            difficulty=meta.get("difficulty", 1),
-            depth_level=meta.get("depth_level", 1),
-            duration_minutes=meta.get("duration_minutes", 10),
-            order_in_topic=meta.get("order_in_topic", 1),
-            description=meta.get("description", ""),
-            youtube_url=youtube_urls[idx],
+            subtopic=mapping.get("subtopic") or raw_v["title"],
+            difficulty=mapping.get("difficulty", 1),
+            depth_level=mapping.get("depth_level", 1),
+            duration_minutes=raw_v["duration_minutes"],
+            order_in_topic=mapping.get("order_in_topic", 1),
+            description=mapping.get("description") or raw_v["description"][:200],
+            youtube_url=raw_v["youtube_url"],
             topic_id=topic.id
         )
-        video.prerequisites = meta.get("prerequisites", [])
+        video.prerequisites = mapping.get("prerequisites", [])
         session.add(video)
         session.flush()
 
@@ -303,57 +525,6 @@ def save_to_database(metadata_list: List[Dict[str, Any]], youtube_urls: List[str
             watched=False,
             timestamp=datetime.utcnow()
         ))
-
-        # 4. Add quiz questions
-        questions = meta.get("quiz_questions", [])
-        for q in questions:
-            question = QuizQuestion(
-                question_text=q.get("question_text", ""),
-                option_a=q.get("option_a", ""),
-                option_b=q.get("option_b", ""),
-                option_c=q.get("option_c", ""),
-                option_d=q.get("option_d", ""),
-                correct_answer=q.get("correct_answer", "A"),
-                difficulty=q.get("difficulty", 1),
-                topic_id=topic.id
-            )
-            session.add(question)
-    session.flush()
-    # Add a few mock quiz attempts so that the progress chart renders immediately
-    all_questions = session.query(QuizQuestion).all()
-    if all_questions:
-        from collections import defaultdict
-        topic_questions = defaultdict(list)
-        for q in all_questions:
-            topic_questions[q.topic_id].append(q)
-        
-        # Add a couple of mock attempts across topics
-        for t_idx, (t_id, qs) in enumerate(topic_questions.items()):
-            if not qs:
-                continue
-            # Attempt 1: got ~66% correct
-            attempt_group_1 = f"mock_pipeline_attempt_{t_id}_1"
-            for q_idx, q in enumerate(qs):
-                is_correct = (q_idx % 3 != 0)
-                session.add(QuizAttempt(
-                    question_id=q.id,
-                    selected_answer=q.correct_answer if is_correct else ("B" if q.correct_answer != "B" else "A"),
-                    is_correct=is_correct,
-                    timestamp=datetime.utcnow() - timedelta(days=2),
-                    attempt_group_id=attempt_group_1
-                ))
-            
-            # Attempt 2 (only for the first topic, showing improvement)
-            if t_idx == 0:
-                attempt_group_2 = f"mock_pipeline_attempt_{t_id}_2"
-                for q in qs:
-                    session.add(QuizAttempt(
-                        question_id=q.id,
-                        selected_answer=q.correct_answer,
-                        is_correct=True,
-                        timestamp=datetime.utcnow() - timedelta(days=1),
-                        attempt_group_id=attempt_group_2
-                    ))
 
     session.commit()
     print("Database updated successfully.")
@@ -495,7 +666,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="YouTube Playlist Adaptive Seeding Pipeline")
     parser.add_argument("playlist_url", nargs="?", help="YouTube playlist URL to parse")
     parser.add_argument("--seed", action="store_true", help="Force database seeding with default mock curriculum")
-    parser.add_argument("--limit", type=int, default=5, help="Limit the number of videos processed to avoid rate limits")
+    parser.add_argument("--limit", type=int, default=150, help="Limit the number of videos processed to avoid rate limits")
     args = parser.parse_args()
 
     # Determine database URL
@@ -528,18 +699,30 @@ def main() -> None:
         if args.limit > 0:
             raw_videos = raw_videos[:args.limit]
             print(f"Limiting parsing to the first {args.limit} videos from the playlist...")
-        extracted_metadata = []
-        youtube_urls = []
+        
+        try:
+            print(f"Analyzing all {len(raw_videos)} videos in a single request with Gemini API...")
+            result = query_gemini_for_all_videos(raw_videos)
+            save_to_database(
+                result.get("topics", []),
+                result.get("video_mappings", []),
+                raw_videos,
+                session
+            )
+            print("\nPipeline execution completed successfully using Gemini API!")
+        except Exception as api_err:
+            print(f"\n[WARNING] Gemini API failed or rate limited: {api_err}")
+            print("Using rule-based local Python curriculum generator as a robust offline fallback to ingest all playlist videos...")
+            result = generate_fallback_curriculum(raw_videos)
+            save_to_database(
+                result.get("topics", []),
+                result.get("video_mappings", []),
+                raw_videos,
+                session
+            )
+            print("\nPipeline execution completed successfully using offline fallback!")
 
-        print("Analyzing videos with Gemini API (this may take a few moments)...")
-        for video in raw_videos:
-            print(f" -> Analyzing '{video['title']}'...")
-            meta = query_gemini_for_metadata(video)
-            extracted_metadata.append(meta)
-            youtube_urls.append(video['youtube_url'])
-
-        save_to_database(extracted_metadata, youtube_urls, session)
-        print("\nPipeline execution completed successfully! The database has been updated.\nSimply refresh your browser tab on http://127.0.0.1:5000 to see your new curriculum!")
+        print("\nSimply refresh your browser tab on http://127.0.0.1:5000 to see your new curriculum!")
 
     except Exception as e:
         print(f"\n[ERROR] Pipeline run failed: {e}")

@@ -1,162 +1,143 @@
 <!DOCTYPE html>
-<html class="dark" lang="en font-body-md">
+<html class="dark" lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>PyAdapt - Quiz</title>
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
-                    "colors": {
-                        "on-background": "#e1e2eb",
-                        "on-secondary": "#263143",
-                        "primary-fixed-dim": "#acc7ff",
-                        "border": "#30363d",
-                        "secondary-container": "#3e495d",
-                        "tertiary-container": "#d37b02",
-                        "on-tertiary-fixed": "#2d1600",
-                        "on-primary-fixed": "#001a40",
-                        "inverse-on-surface": "#2e3037",
-                        "on-surface": "#e1e2eb",
-                        "success": "#22c55e",
-                        "outline": "#8c909e",
-                        "tertiary-fixed-dim": "#ffb873",
-                        "tertiary-fixed": "#ffdcbf",
-                        "primary": "#acc7ff",
-                        "on-secondary-fixed-variant": "#3c475a",
-                        "secondary-fixed": "#d8e3fb",
-                        "error-container": "#93000a",
-                        "surface-container-highest": "#32353c",
-                        "primary-fixed": "#d7e2ff",
-                        "surface-container-lowest": "#0b0e14",
-                        "primary-container": "#508ff8",
-                        "tertiary": "#ffb873",
-                        "on-primary": "#002f68",
-                        "inverse-primary": "#005bbf",
-                        "on-tertiary": "#4b2800",
-                        "surface-bright": "#373940",
-                        "secondary": "#bcc7de",
-                        "on-primary-fixed-variant": "#004492",
-                        "on-secondary-container": "#aeb9d0",
-                        "background": "#0f1117",
-                        "inverse-surface": "#e1e2eb",
-                        "secondary-fixed-dim": "#bcc7de",
-                        "surface-dim": "#11131a",
-                        "on-secondary-fixed": "#111c2d",
-                        "surface-container-high": "#272a31",
-                        "surface-container": "#1d2026",
-                        "on-surface-variant": "#c2c6d5",
-                        "on-primary-container": "#00285b",
-                        "on-error": "#690005",
-                        "outline-variant": "#424753",
-                        "surface-tint": "#acc7ff",
-                        "surface-variant": "#32353c",
-                        "warning": "#f59e0b",
-                        "on-error-container": "#ffdad6",
-                        "on-tertiary-container": "#412200",
-                        "on-tertiary-fixed-variant": "#6a3b00",
-                        "danger": "#ef4444",
-                        "surface-container-low": "#191c22",
-                        "surface": "#161b22",
-                        "error": "#ffb4ab"
+                    colors: {
+                        brand: {
+                            blue: "#508ff8",
+                            green: "#22c55e",
+                            purple: "#a855f7",
+                            darkBg: "#0a0c10",
+                            glassCard: "rgba(255, 255, 255, 0.03)",
+                            glassBorder: "rgba(255, 255, 255, 0.08)"
+                        }
                     },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    "spacing": {
-                        "margin": "32px",
-                        "sidebar-width": "64px",
-                        "stack-gap": "16px",
-                        "gutter": "24px",
-                        "content-max-width": "1200px"
-                    },
-                    "fontFamily": {
-                        "body-md": ["Geist"],
-                        "label-sm": ["JetBrains Mono"],
-                        "headline-lg": ["Geist"],
-                        "body-lg": ["Geist"],
-                        "headline-md": ["Geist"],
-                        "code-md": ["JetBrains Mono"]
-                    },
-                    "fontSize": {
-                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
-                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
-                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
-                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
-                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
-                        "code-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }]
+                    fontFamily: {
+                        sans: ["Geist", "sans-serif"],
+                        mono: ["JetBrains Mono", "monospace"]
                     }
                 }
             }
         }
     </script>
     <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        body {
+            background: radial-gradient(circle at 10% 20%, rgba(80, 143, 248, 0.08) 0%, transparent 45%),
+                        radial-gradient(circle at 90% 80%, rgba(34, 197, 94, 0.08) 0%, transparent 45%),
+                        #080a0f;
+            font-family: 'Geist', sans-serif;
         }
-        .material-symbols-outlined.fill {
-            font-variation-settings: 'FILL' 1;
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.25);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.01);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
     </style>
 </head>
-<body class="bg-background text-on-background min-h-screen flex font-body-md text-body-md overflow-x-hidden selection:bg-primary selection:text-on-primary-fixed">
-    <!-- SideNavBar -->
-    <nav class="fixed left-0 top-0 h-full flex flex-col justify-between py-margin z-40 bg-surface-container-lowest dark:bg-surface-container-lowest w-sidebar-width border-r border-border dark:border-border">
-        <div class="flex flex-col items-center gap-6">
-            <!-- Brand -->
-            <div class="text-headline-md font-headline-md font-black text-primary dark:text-primary tracking-tighter mb-8" title="PyAdapt Python Learning">
-                P
+<body class="text-slate-100 min-h-screen w-full flex overflow-hidden">
+
+    <!-- SideNavBar (Glassmorphic) -->
+    <nav class="w-20 flex flex-col justify-between py-8 items-center border-r border-white/5 bg-white/[0.01] backdrop-blur-md z-40 shrink-0">
+        <div class="flex flex-col items-center gap-8 w-full">
+            <!-- Brand Logo -->
+            <div class="text-2xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
+                PyA
             </div>
             <!-- Navigation Items -->
-            <!-- Dashboard -->
-            <a class="{% if active_tab == 'dashboard' %}text-primary dark:text-primary font-bold border-l-2 border-primary pl-2 opacity-100 scale-100 bg-surface-container-highest{% else %}text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors group{% endif %} flex flex-col items-center justify-center p-4 w-full" href="/" title="Dashboard">
-                <span class="material-symbols-outlined {% if active_tab == 'dashboard' %}text-primary{% else %}transition-transform group-hover:scale-110{% endif %}" {% if active_tab == 'dashboard' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>dashboard</span>
-            </a>
-            <!-- Current Lesson -->
-            <a class="{% if active_tab == 'lesson' %}text-primary dark:text-primary font-bold border-l-2 border-primary pl-2 opacity-100 scale-100 bg-surface-container-highest{% else %}text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors group{% endif %} flex flex-col items-center justify-center p-4 w-full" href="{% if current_focus.video_id %}/lesson/{{ current_focus.video_id }}{% else %}#{% endif %}" title="Current Lesson">
-                <span class="material-symbols-outlined {% if active_tab == 'lesson' %}text-primary{% else %}transition-transform group-hover:scale-110{% endif %}" {% if active_tab == 'lesson' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>auto_stories</span>
-            </a>
-            <!-- Progress -->
-            <a class="{% if active_tab == 'progress' %}text-primary dark:text-primary font-bold border-l-2 border-primary pl-2 opacity-100 scale-100 bg-surface-container-highest{% else %}text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors group{% endif %} flex flex-col items-center justify-center p-4 w-full" href="/progress" title="Progress">
-                <span class="material-symbols-outlined {% if active_tab == 'progress' %}text-primary{% else %}transition-transform group-hover:scale-110{% endif %}" {% if active_tab == 'progress' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>leaderboard</span>
-            </a>
+            <div class="flex flex-col items-center gap-4 w-full">
+                <!-- Dashboard -->
+                <a href="/" class="p-3 rounded-xl transition-all duration-300 {% if active_tab == 'dashboard' %}bg-blue-500/10 text-blue-400 border border-blue-500/20{% else %}text-slate-400 hover:bg-white/5 hover:text-white{% endif %} group relative" title="Dashboard">
+                    <span class="material-symbols-outlined text-[24px]">dashboard</span>
+                    <span class="absolute left-full ml-4 px-2 py-1 bg-slate-900 border border-white/10 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none shadow-xl">Dashboard</span>
+                </a>
+                <!-- Current Lesson -->
+                <a href="{% if current_focus.video_id %}/lesson/{{ current_focus.video_id }}{% else %}#{% endif %}" class="p-3 rounded-xl transition-all duration-300 {% if active_tab == 'lesson' %}bg-blue-500/10 text-blue-400 border border-blue-500/20{% else %}text-slate-400 hover:bg-white/5 hover:text-white{% endif %} group relative" title="Current Lesson">
+                    <span class="material-symbols-outlined text-[24px]">auto_stories</span>
+                    <span class="absolute left-full ml-4 px-2 py-1 bg-slate-900 border border-white/10 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none shadow-xl">Current Lesson</span>
+                </a>
+                <!-- Progress Analytics -->
+                <a href="/progress" class="p-3 rounded-xl transition-all duration-300 {% if active_tab == 'progress' %}bg-blue-500/10 text-blue-400 border border-blue-500/20{% else %}text-slate-400 hover:bg-white/5 hover:text-white{% endif %} group relative" title="Progress">
+                    <span class="material-symbols-outlined text-[24px]">leaderboard</span>
+                    <span class="absolute left-full ml-4 px-2 py-1 bg-slate-900 border border-white/10 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none shadow-xl">Progress Analytics</span>
+                </a>
+            </div>
         </div>
-        <!-- Bottom Items -->
+        <!-- Profile -->
         <div class="flex flex-col items-center">
-            <div class="mt-4 p-2 rounded-full border border-border overflow-hidden">
-                <img alt="User Profile Avatar" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBScg0RsoWZXW-6m4WSuoSn5twpmaUHFITEJRHRwwVOBczNj1Ti_yCm4MfFKqzwGL8agK0k_laryB3OpRHMgsFhoF-LR7WlnIfi5qWW7u1SuPPi9ILV-QJdZI3yDmF_-ft_e5E2w-UfEb2DjZkJozC8nX3v2uKmrtHjRfftyOFB0Ie5O4eW2M00ECWf2mkPEzkbbLLu2bG8DfsnpFjNwgbLPqKHh6n3cGrpCKRvOvZ21K_unxguO9D2K6JmU0Lffi52arYdv9Cbk_k"/>
+            <div class="w-10 h-10 rounded-full border border-white/10 overflow-hidden shadow-inner p-0.5">
+                <img alt="User Avatar" class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBScg0RsoWZXW-6m4WSuoSn5twpmaUHFITEJRHRwwVOBczNj1Ti_yCm4MfFKqzwGL8agK0k_laryB3OpRHMgsFhoF-LR7WlnIfi5qWW7u1SuPPi9ILV-QJdZI3yDmF_-ft_e5E2w-UfEb2DjZkJozC8nX3v2uKmrtHjRfftyOFB0Ie5O4eW2M00ECWf2mkPEzkbbLLu2bG8DfsnpFjNwgbLPqKHh6n3cGrpCKRvOvZ21K_unxguO9D2K6JmU0Lffi52arYdv9Cbk_k"/>
             </div>
         </div>
     </nav>
 
     <!-- Main Workspace -->
-    <div class="flex-1 ml-sidebar-width flex flex-col min-h-screen w-[calc(100%-64px)]">
-        <header class="bg-background border-b border-border flex justify-between items-center h-16 px-gutter shrink-0">
-            <div class="flex items-center gap-4">
-                <span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest">Active Quiz</span>
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Glass Header -->
+        <header class="h-16 px-8 border-b border-white/5 bg-white/[0.01] backdrop-blur-md flex justify-between items-center z-30 shrink-0">
+            <div class="flex items-center gap-3">
+                <h1 class="text-xl font-bold tracking-tight text-white">Topic Knowledge Evaluation</h1>
+                <span class="text-slate-600 font-mono text-sm">/</span>
+                <span class="text-xs font-semibold uppercase tracking-widest text-slate-400 bg-white/5 px-2.5 py-1 rounded-md border border-white/5">{{ topic.name }}</span>
             </div>
+            <a href="/" class="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-slate-300 text-xs font-semibold transition-colors">
+                <span class="material-symbols-outlined text-[16px]">close</span>
+                Exit Quiz
+            </a>
         </header>
 
-        <main class="flex-1 p-gutter flex flex-col items-center overflow-y-auto">
-            <div class="w-full max-w-3xl mt-8 mb-16">
-                <!-- Quiz Header -->
-                <div class="flex flex-col gap-6">
-                    <div class="flex items-baseline justify-between">
-                        <h1 class="font-headline-md text-headline-md text-on-surface tracking-tight">Quiz — {{ topic.name }}</h1>
-                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Question {{ q_index + 1 }} of {{ q_count }}</span>
+        <!-- Content Area -->
+        <main class="flex-1 overflow-y-auto px-8 md:px-12 py-10">
+            <div class="max-w-3xl mx-auto">
+                
+                <!-- Quiz Progress Stats Header -->
+                <div class="flex flex-col gap-4 mb-8">
+                    <div class="flex justify-between items-end">
+                        <div>
+                            <span class="text-[10px] text-blue-400 font-bold uppercase tracking-wider">Evaluation Mode</span>
+                            <h2 class="text-2xl font-extrabold text-white mt-1">{{ topic.name }}</h2>
+                        </div>
+                        <span class="text-xs text-slate-400 font-mono font-semibold">Question {{ q_index + 1 }} of {{ q_count }}</span>
                     </div>
-                    <div class="w-full h-[4px] bg-surface-container-high rounded-full overflow-hidden">
-                        <div class="h-full bg-primary rounded-full transition-all duration-500 ease-in-out" style="width: {{ progress_percent }}%;"></div>
+                    <div class="w-full bg-slate-900/60 h-2 rounded-full overflow-hidden border border-white/5">
+                        <div class="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500" style="width: {{ progress_percent }}%;"></div>
                     </div>
                 </div>
 
@@ -164,52 +145,55 @@
                 <form action="/quiz/{{ topic.id }}?q={{ q_index }}" method="POST" id="quiz_form">
                     <input type="hidden" name="selected_option" id="selected_option" value=""/>
                     
-                    <div class="mt-margin">
-                        <div class="bg-surface border border-border rounded-xl p-8 shadow-sm">
-                            <div class="flex gap-4 items-start mb-8">
-                                <span class="material-symbols-outlined text-primary text-[28px] shrink-0 mt-1">help</span>
-                                <div class="font-body-lg text-body-lg text-on-surface leading-relaxed">
-                                    {{ question.question_text }}
-                                </div>
-                            </div>
-                            
-                            <!-- Choices List -->
-                            <div class="flex flex-col gap-3">
-                                <!-- Option A -->
-                                <button type="button" onclick="selectOption('A')" id="btn_A" class="w-full text-left flex items-center p-5 rounded-lg border border-border bg-surface hover:bg-surface-container-high hover:border-outline-variant transition-all group focus:outline-none focus:ring-2 focus:ring-primary">
-                                    <div id="dot_A" class="w-4 h-4 rounded-full border border-outline-variant mr-5 shrink-0 group-hover:border-on-surface-variant transition-colors"></div>
-                                    <span class="font-code-md text-code-md text-on-surface-variant group-hover:text-on-surface transition-colors">{{ question.option_a }}</span>
-                                </button>
-                                
-                                <!-- Option B -->
-                                <button type="button" onclick="selectOption('B')" id="btn_B" class="w-full text-left flex items-center p-5 rounded-lg border border-border bg-surface hover:bg-surface-container-high hover:border-outline-variant transition-all group focus:outline-none focus:ring-2 focus:ring-primary">
-                                    <div id="dot_B" class="w-4 h-4 rounded-full border border-outline-variant mr-5 shrink-0 group-hover:border-on-surface-variant transition-colors"></div>
-                                    <span class="font-code-md text-code-md text-on-surface-variant group-hover:text-on-surface transition-colors">{{ question.option_b }}</span>
-                                </button>
+                    <div class="glass-card rounded-2xl p-8 border border-white/5 shadow-2xl relative overflow-hidden">
+                        
+                        <!-- Glow ornament behind the question -->
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full filter blur-2xl"></div>
 
-                                <!-- Option C -->
-                                <button type="button" onclick="selectOption('C')" id="btn_C" class="w-full text-left flex items-center p-5 rounded-lg border border-border bg-surface hover:bg-surface-container-high hover:border-outline-variant transition-all group focus:outline-none focus:ring-2 focus:ring-primary">
-                                    <div id="dot_C" class="w-4 h-4 rounded-full border border-outline-variant mr-5 shrink-0 group-hover:border-on-surface-variant transition-colors"></div>
-                                    <span class="font-code-md text-code-md text-on-surface-variant group-hover:text-on-surface transition-colors">{{ question.option_c }}</span>
-                                </button>
-
-                                <!-- Option D -->
-                                <button type="button" onclick="selectOption('D')" id="btn_D" class="w-full text-left flex items-center p-5 rounded-lg border border-border bg-surface hover:bg-surface-container-high hover:border-outline-variant transition-all group focus:outline-none focus:ring-2 focus:ring-primary">
-                                    <div id="dot_D" class="w-4 h-4 rounded-full border border-outline-variant mr-5 shrink-0 group-hover:border-on-surface-variant transition-colors"></div>
-                                    <span class="font-code-md text-code-md text-on-surface-variant group-hover:text-on-surface transition-colors">{{ question.option_d }}</span>
-                                </button>
+                        <div class="flex gap-4 items-start mb-8 relative z-10">
+                            <span class="material-symbols-outlined text-blue-400 text-3xl shrink-0">help_center</span>
+                            <div class="text-lg font-medium text-slate-100 leading-relaxed">
+                                {{ question.question_text }}
                             </div>
+                        </div>
+
+                        <!-- Choices List -->
+                        <div class="flex flex-col gap-3 relative z-10">
+                            <!-- Option A -->
+                            <button type="button" onclick="selectOption('A')" id="btn_A" class="w-full text-left flex items-center p-5 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-all group focus:outline-none">
+                                <div id="dot_A" class="w-4 h-4 rounded-full border border-slate-600 mr-5 shrink-0 group-hover:border-slate-400 transition-colors"></div>
+                                <span class="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">{{ question.option_a }}</span>
+                            </button>
+
+                            <!-- Option B -->
+                            <button type="button" onclick="selectOption('B')" id="btn_B" class="w-full text-left flex items-center p-5 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-all group focus:outline-none">
+                                <div id="dot_B" class="w-4 h-4 rounded-full border border-slate-600 mr-5 shrink-0 group-hover:border-slate-400 transition-colors"></div>
+                                <span class="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">{{ question.option_b }}</span>
+                            </button>
+
+                            <!-- Option C -->
+                            <button type="button" onclick="selectOption('C')" id="btn_C" class="w-full text-left flex items-center p-5 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-all group focus:outline-none">
+                                <div id="dot_C" class="w-4 h-4 rounded-full border border-slate-600 mr-5 shrink-0 group-hover:border-slate-400 transition-colors"></div>
+                                <span class="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">{{ question.option_c }}</span>
+                            </button>
+
+                            <!-- Option D -->
+                            <button type="button" onclick="selectOption('D')" id="btn_D" class="w-full text-left flex items-center p-5 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-all group focus:outline-none">
+                                <div id="dot_D" class="w-4 h-4 rounded-full border border-slate-600 mr-5 shrink-0 group-hover:border-slate-400 transition-colors"></div>
+                                <span class="text-sm font-medium text-slate-300 group-hover:text-white transition-colors">{{ question.option_d }}</span>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Submission buttons -->
-                    <div class="mt-margin flex justify-end">
-                        <button type="submit" id="submit_btn" disabled class="opacity-50 cursor-not-allowed bg-primary text-on-primary-fixed font-label-sm text-label-sm uppercase tracking-wider px-8 py-3.5 rounded hover:bg-primary-fixed transition-all flex items-center gap-2 shadow-[0_4px_14px_rgba(172,199,255,0.15)]">
-                            {% if is_last %}Submit Quiz{% else %}Next Question{% endif %}
+                    <!-- Submission Action -->
+                    <div class="mt-6 flex justify-end">
+                        <button type="submit" id="submit_btn" disabled class="opacity-50 cursor-not-allowed bg-blue-500 text-slate-900 font-extrabold text-xs uppercase tracking-wider px-8 py-3.5 rounded-xl transition-all shadow-lg flex items-center gap-2">
+                            <span>{% if is_last %}Submit Answers{% else %}Next Question{% endif %}</span>
                             <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                         </button>
                     </div>
                 </form>
+
             </div>
         </main>
     </div>
@@ -224,6 +208,7 @@
             const submitBtn = document.getElementById('submit_btn');
             submitBtn.disabled = false;
             submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            submitBtn.classList.add('shadow-blue-500/20', 'hover:bg-blue-600');
             
             // Reset all buttons style
             const options = ['A', 'B', 'C', 'D'];
@@ -233,28 +218,28 @@
                 const text = btn.querySelector('span');
                 
                 if (opt === val) {
-                    // Selected state
-                    btn.className = "w-full text-left flex items-center p-5 rounded-lg border border-primary bg-primary/10 shadow-[0_0_15px_rgba(172,199,255,0.05)] transition-all focus:outline-none focus:ring-2 focus:ring-primary relative overflow-hidden";
+                    // Selected state with glowing borders
+                    btn.className = "w-full text-left flex items-center p-5 rounded-xl border border-blue-500 bg-blue-500/10 shadow-[0_0_15px_rgba(80,143,248,0.15)] transition-all focus:outline-none relative overflow-hidden";
                     
                     // Add indicator strip
                     if (!btn.querySelector('.indicator-strip')) {
                         const strip = document.createElement('div');
-                        strip.className = 'absolute left-0 top-0 bottom-0 w-1 bg-primary indicator-strip';
+                        strip.className = 'absolute left-0 top-0 bottom-0 w-1 bg-blue-500 indicator-strip';
                         btn.appendChild(strip);
                     }
                     
-                    dot.className = "w-4 h-4 rounded-full border-4 border-primary bg-background mr-5 shrink-0";
-                    text.className = "font-code-md text-code-md text-primary-fixed-dim";
+                    dot.className = "w-4 h-4 rounded-full border-4 border-blue-500 bg-slate-950 mr-5 shrink-0";
+                    text.className = "text-sm font-bold text-blue-400";
                 } else {
                     // Deselect style
-                    btn.className = "w-full text-left flex items-center p-5 rounded-lg border border-border bg-surface hover:bg-surface-container-high hover:border-outline-variant transition-all group focus:outline-none focus:ring-2 focus:ring-primary";
+                    btn.className = "w-full text-left flex items-center p-5 rounded-xl border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] transition-all group focus:outline-none";
                     
                     // Remove indicator strip if exists
                     const strip = btn.querySelector('.indicator-strip');
                     if (strip) strip.remove();
                     
-                    dot.className = "w-4 h-4 rounded-full border border-outline-variant mr-5 shrink-0 group-hover:border-on-surface-variant transition-colors";
-                    text.className = "font-code-md text-code-md text-on-surface-variant group-hover:text-on-surface transition-colors";
+                    dot.className = "w-4 h-4 rounded-full border border-slate-600 mr-5 shrink-0 group-hover:border-slate-400 transition-colors";
+                    text.className = "text-sm font-medium text-slate-300 group-hover:text-white transition-colors";
                 }
             });
         }

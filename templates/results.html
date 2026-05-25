@@ -4,187 +4,155 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>PyAdapt - Quiz Results</title>
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script id="tailwind-config">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <script>
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
-                    "colors": {
-                        "on-background": "#e1e2eb",
-                        "on-secondary": "#263143",
-                        "primary-fixed-dim": "#acc7ff",
-                        "border": "#30363d",
-                        "secondary-container": "#3e495d",
-                        "tertiary-container": "#d37b02",
-                        "on-tertiary-fixed": "#2d1600",
-                        "on-primary-fixed": "#001a40",
-                        "inverse-on-surface": "#2e3037",
-                        "on-surface": "#e1e2eb",
-                        "success": "#22c55e",
-                        "outline": "#8c909e",
-                        "tertiary-fixed-dim": "#ffb873",
-                        "tertiary-fixed": "#ffdcbf",
-                        "primary": "#acc7ff",
-                        "on-secondary-fixed-variant": "#3c475a",
-                        "secondary-fixed": "#d8e3fb",
-                        "error-container": "#93000a",
-                        "surface-container-highest": "#32353c",
-                        "primary-fixed": "#d7e2ff",
-                        "surface-container-lowest": "#0b0e14",
-                        "primary-container": "#508ff8",
-                        "tertiary": "#ffb873",
-                        "on-primary": "#002f68",
-                        "inverse-primary": "#005bbf",
-                        "on-tertiary": "#4b2800",
-                        "surface-bright": "#373940",
-                        "secondary": "#bcc7de",
-                        "on-primary-fixed-variant": "#004492",
-                        "on-secondary-container": "#aeb9d0",
-                        "background": "#0f1117",
-                        "inverse-surface": "#e1e2eb",
-                        "secondary-fixed-dim": "#bcc7de",
-                        "surface-dim": "#11131a",
-                        "on-secondary-fixed": "#111c2d",
-                        "surface-container-high": "#272a31",
-                        "surface-container": "#1d2026",
-                        "on-surface-variant": "#c2c6d5",
-                        "on-primary-container": "#00285b",
-                        "on-error": "#690005",
-                        "outline-variant": "#424753",
-                        "surface-tint": "#acc7ff",
-                        "surface-variant": "#32353c",
-                        "warning": "#f59e0b",
-                        "on-error-container": "#ffdad6",
-                        "on-tertiary-container": "#412200",
-                        "on-tertiary-fixed-variant": "#6a3b00",
-                        "danger": "#ef4444",
-                        "surface-container-low": "#191c22",
-                        "surface": "#161b22",
-                        "error": "#ffb4ab"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    "spacing": {
-                        "margin": "32px",
-                        "sidebar-width": "64px",
-                        "stack-gap": "16px",
-                        "gutter": "24px",
-                        "content-max-width": "1200px"
-                    },
-                    "fontFamily": {
-                        "body-md": ["Geist"],
-                        "label-sm": ["JetBrains Mono"],
-                        "headline-lg": ["Geist"],
-                        "body-lg": ["Geist"],
-                        "headline-md": ["Geist"],
-                        "code-md": ["JetBrains Mono"]
-                    },
-                    "fontSize": {
-                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
-                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
-                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }],
-                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
-                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
-                        "code-md": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }]
-                    }
+                    fontFamily: { sans: ["Geist", "sans-serif"], mono: ["JetBrains Mono", "monospace"] }
                 }
             }
         }
     </script>
     <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        body {
+            background: radial-gradient(circle at 10% 20%, rgba(80, 143, 248, 0.08) 0%, transparent 45%),
+                        radial-gradient(circle at 90% 80%, rgba(34, 197, 94, 0.06) 0%, transparent 45%),
+                        #080a0f;
+            font-family: 'Geist', sans-serif;
         }
-        .material-symbols-outlined.fill {
-            font-variation-settings: 'FILL' 1;
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.25s ease;
+        }
+        .option-correct {
+            background: rgba(34, 197, 94, 0.08);
+            border-color: rgba(34, 197, 94, 0.4);
+        }
+        .option-wrong {
+            background: rgba(239, 68, 68, 0.08);
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+        .option-neutral {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.06);
         }
     </style>
 </head>
-<body class="bg-background text-on-background min-h-screen flex font-body-md text-body-md overflow-x-hidden selection:bg-primary selection:text-on-primary-fixed">
-    <!-- SideNavBar -->
-    <nav class="fixed left-0 top-0 h-full flex flex-col justify-between py-margin z-40 bg-surface-container-lowest dark:bg-surface-container-lowest w-sidebar-width border-r border-border dark:border-border">
-        <div class="flex flex-col items-center gap-6">
-            <!-- Brand -->
-            <div class="text-headline-md font-headline-md font-black text-primary dark:text-primary tracking-tighter mb-8" title="PyAdapt Python Learning">
-                P
+<body class="text-slate-100 min-h-screen w-full flex overflow-hidden">
+
+    <!-- SideNav -->
+    <nav class="w-20 flex flex-col justify-between py-8 items-center border-r border-white/5 bg-white/[0.01] backdrop-blur-md z-40 shrink-0">
+        <div class="flex flex-col items-center gap-8 w-full">
+            <div class="text-2xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">PyA</div>
+            <div class="flex flex-col items-center gap-4 w-full">
+                <a href="/" class="p-3 rounded-xl transition-all duration-300 {% if active_tab == 'dashboard' %}bg-blue-500/10 text-blue-400 border border-blue-500/20{% else %}text-slate-400 hover:bg-white/5 hover:text-white{% endif %} group relative" title="Dashboard">
+                    <span class="material-symbols-outlined text-[24px]">dashboard</span>
+                    <span class="absolute left-full ml-4 px-2 py-1 bg-slate-900 border border-white/10 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none">Dashboard</span>
+                </a>
+                <a href="{% if current_focus.video_id %}/lesson/{{ current_focus.video_id }}{% else %}#{% endif %}" class="p-3 rounded-xl transition-all duration-300 text-blue-400 bg-blue-500/10 border border-blue-500/20 group relative" title="Current Lesson">
+                    <span class="material-symbols-outlined text-[24px]">auto_stories</span>
+                    <span class="absolute left-full ml-4 px-2 py-1 bg-slate-900 border border-white/10 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none">Lesson</span>
+                </a>
+                <a href="/progress" class="p-3 rounded-xl transition-all duration-300 text-slate-400 hover:bg-white/5 hover:text-white group relative" title="Progress">
+                    <span class="material-symbols-outlined text-[24px]">leaderboard</span>
+                    <span class="absolute left-full ml-4 px-2 py-1 bg-slate-900 border border-white/10 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none">Progress</span>
+                </a>
             </div>
-            <!-- Navigation Items -->
-            <!-- Dashboard -->
-            <a class="{% if active_tab == 'dashboard' %}text-primary dark:text-primary font-bold border-l-2 border-primary pl-2 opacity-100 scale-100 bg-surface-container-highest{% else %}text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors group{% endif %} flex flex-col items-center justify-center p-4 w-full" href="/" title="Dashboard">
-                <span class="material-symbols-outlined {% if active_tab == 'dashboard' %}text-primary{% else %}transition-transform group-hover:scale-110{% endif %}" {% if active_tab == 'dashboard' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>dashboard</span>
-            </a>
-            <!-- Current Lesson -->
-            <a class="{% if active_tab == 'lesson' %}text-primary dark:text-primary font-bold border-l-2 border-primary pl-2 opacity-100 scale-100 bg-surface-container-highest{% else %}text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors group{% endif %} flex flex-col items-center justify-center p-4 w-full" href="{% if current_focus.video_id %}/lesson/{{ current_focus.video_id }}{% else %}#{% endif %}" title="Current Lesson">
-                <span class="material-symbols-outlined {% if active_tab == 'lesson' %}text-primary{% else %}transition-transform group-hover:scale-110{% endif %}" {% if active_tab == 'lesson' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>auto_stories</span>
-            </a>
-            <!-- Progress -->
-            <a class="{% if active_tab == 'progress' %}text-primary dark:text-primary font-bold border-l-2 border-primary pl-2 opacity-100 scale-100 bg-surface-container-highest{% else %}text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors group{% endif %} flex flex-col items-center justify-center p-4 w-full" href="/progress" title="Progress">
-                <span class="material-symbols-outlined {% if active_tab == 'progress' %}text-primary{% else %}transition-transform group-hover:scale-110{% endif %}" {% if active_tab == 'progress' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>leaderboard</span>
-            </a>
         </div>
-        <!-- Bottom Items -->
-        <div class="flex flex-col items-center">
-            <div class="mt-4 p-2 rounded-full border border-border overflow-hidden">
-                <img alt="User Profile Avatar" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBScg0RsoWZXW-6m4WSuoSn5twpmaUHFITEJRHRwwVOBczNj1Ti_yCm4MfFKqzwGL8agK0k_laryB3OpRHMgsFhoF-LR7WlnIfi5qWW7u1SuPPi9ILV-QJdZI3yDmF_-ft_e5E2w-UfEb2DjZkJozC8nX3v2uKmrtHjRfftyOFB0Ie5O4eW2M00ECWf2mkPEzkbbLLu2bG8DfsnpFjNwgbLPqKHh6n3cGrpCKRvOvZ21K_unxguO9D2K6JmU0Lffi52arYdv9Cbk_k"/>
-            </div>
+        <div class="w-10 h-10 rounded-full border border-white/10 overflow-hidden p-0.5">
+            <img alt="Profile" class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBScg0RsoWZXW-6m4WSuoSn5twpmaUHFITEJRHRwwVOBczNj1Ti_yCm4MfFKqzwGL8agK0k_laryB3OpRHMgsFhoF-LR7WlnIfi5qWW7u1SuPPi9ILV-QJdZI3yDmF_-ft_e5E2w-UfEb2DjZkJozC8nX3v2uKmrtHjRfftyOFB0Ie5O4eW2M00ECWf2mkPEzkbbLLu2bG8DfsnpFjNwgbLPqKHh6n3cGrpCKRvOvZ21K_unxguO9D2K6JmU0Lffi52arYdv9Cbk_k"/>
         </div>
     </nav>
 
-    <!-- Main Workspace -->
-    <div class="flex-1 ml-sidebar-width flex flex-col min-h-screen w-[calc(100%-64px)]">
-        <header class="bg-background border-b border-border flex justify-between items-center h-16 px-gutter shrink-0">
-            <div class="flex items-center gap-4">
-                <h1 class="text-headline-md font-headline-md text-primary font-bold">Quiz Results</h1>
-                <span class="text-on-surface-variant material-symbols-outlined text-sm">chevron_right</span>
-                <span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest">{{ results.topic_name }}</span>
+    <!-- Main -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Header -->
+        <header class="h-16 px-8 border-b border-white/5 bg-white/[0.01] backdrop-blur-md flex justify-between items-center z-30 shrink-0">
+            <div class="flex items-center gap-3">
+                <h1 class="text-xl font-bold tracking-tight text-white">Quiz Results</h1>
+                <span class="text-slate-600 font-mono text-sm">/</span>
+                <span class="text-xs font-semibold uppercase tracking-widest text-slate-400 bg-white/5 px-2.5 py-1 rounded-md border border-white/5">{{ results.topic_name }}</span>
+            </div>
+            <!-- Score badge -->
+            <div class="flex items-center gap-2 px-4 py-1.5 rounded-xl border 
+                {% if results.score_percentage >= 80 %}bg-emerald-500/10 border-emerald-500/20 text-emerald-400
+                {% elif results.score_percentage >= 50 %}bg-amber-500/10 border-amber-500/20 text-amber-400
+                {% else %}bg-rose-500/10 border-rose-500/20 text-rose-400{% endif %}">
+                <span class="text-xs font-bold uppercase tracking-wider">Score</span>
+                <span class="text-sm font-black font-mono">{{ results.score_percentage }}%</span>
             </div>
         </header>
 
-        <main class="flex-1 p-gutter flex flex-col items-center overflow-y-auto">
-            <div class="w-full max-w-4xl mt-6 mb-16">
-                <!-- Top Metrics Banner -->
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-8">
-                    <!-- Left: Score Card -->
-                    <div class="md:col-span-4 bg-surface border border-border rounded-xl p-6 flex flex-col items-center justify-center text-center">
-                        <span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Your Score</span>
-                        <span class="text-[54px] font-black {% if results.score_percentage >= 80 %}text-success{% elif results.score_percentage >= 50 %}text-warning{% else %}text-danger{% endif %} leading-none">
-                            {{ results.score_percentage }}%
-                        </span>
-                        <span class="text-code-md font-code-md text-on-surface-variant mt-2">
-                            ({{ results.correct_count }} / {{ results.total_count }} Correct)
-                        </span>
+        <!-- Content -->
+        <main class="flex-1 overflow-y-auto px-8 md:px-12 py-10">
+            <div class="max-w-5xl mx-auto flex flex-col gap-8">
+
+                <!-- Top Bento: Score + Recommendation -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Score Card -->
+                    <div class="lg:col-span-4 glass-card rounded-2xl p-8 flex flex-col items-center justify-center text-center">
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-3">Your Score</p>
+                        <div class="relative flex items-center justify-center mb-4">
+                            <svg class="w-32 h-32 -rotate-90" viewBox="0 0 120 120">
+                                <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="10"/>
+                                <circle cx="60" cy="60" r="50" fill="none"
+                                    stroke="{% if results.score_percentage >= 80 %}#22c55e{% elif results.score_percentage >= 50 %}#f59e0b{% else %}#ef4444{% endif %}"
+                                    stroke-width="10"
+                                    stroke-linecap="round"
+                                    stroke-dasharray="{{ (results.score_percentage / 100 * 314.16) | int }} 314.16"/>
+                            </svg>
+                            <div class="absolute flex flex-col items-center">
+                                <span class="text-4xl font-black leading-none
+                                    {% if results.score_percentage >= 80 %}text-emerald-400
+                                    {% elif results.score_percentage >= 50 %}text-amber-400
+                                    {% else %}text-rose-400{% endif %}">
+                                    {{ results.score_percentage | int }}%
+                                </span>
+                            </div>
+                        </div>
+                        <p class="text-sm font-bold text-slate-300 font-mono">{{ results.correct_count }} / {{ results.total_count }} correct</p>
+                        <p class="text-xs text-slate-500 mt-1">
+                            {% if results.score_percentage >= 80 %}Excellent work! 🎉
+                            {% elif results.score_percentage >= 50 %}Good effort! Keep going 💪
+                            {% else %}Keep practicing! You've got this 🔁{% endif %}
+                        </p>
                     </div>
 
-                    <!-- Right: Recommendation & Path suggestion -->
-                    <div class="md:col-span-8 bg-surface border border-border rounded-xl p-6 flex flex-col justify-between">
+                    <!-- Adaptive Recommendation -->
+                    <div class="lg:col-span-8 glass-card rounded-2xl p-7 flex flex-col justify-between">
                         <div>
-                            <div class="flex justify-between items-start mb-3">
-                                <h2 class="text-body-lg font-body-lg font-bold text-on-surface">Adaptive System Recommendation</h2>
-                                <span class="font-label-sm text-label-sm px-3 py-1 rounded border border-primary text-primary bg-primary/10">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-blue-400 text-[22px]" style="font-variation-settings:'FILL' 1;">psychology</span>
+                                    <h2 class="text-base font-bold text-white">Adaptive Recommendation</h2>
+                                </div>
+                                <span class="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400">
                                     {{ recommendation.recommendation_label }}
                                 </span>
                             </div>
-                            <p class="text-body-md font-body-md text-on-surface-variant leading-relaxed mb-4">
-                                {{ recommendation.reasoning }}
-                            </p>
+                            <p class="text-sm text-slate-300 leading-relaxed">{{ recommendation.reasoning }}</p>
                         </div>
-                        
-                        <!-- CTA button -->
-                        <div class="flex gap-4">
-                            <a href="/" class="bg-surface-container-high text-on-surface border border-border hover:bg-surface-bright px-6 py-2.5 rounded text-label-sm font-label-sm font-bold uppercase transition-colors">
-                                Go to Dashboard
+
+                        <!-- CTA Buttons -->
+                        <div class="flex gap-3 mt-6 flex-wrap">
+                            <a href="/" class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider border border-white/10 bg-white/5 hover:bg-white/10 text-slate-300 transition-all">
+                                <span class="material-symbols-outlined text-[16px]">home</span>
+                                Dashboard
                             </a>
                             {% if next_video_id %}
-                            <a href="/lesson/{{ next_video_id }}" class="bg-primary text-on-primary-fixed hover:bg-surface-tint px-6 py-2.5 rounded text-label-sm font-label-sm font-bold uppercase transition-colors flex items-center gap-1">
+                            <a href="/lesson/{{ next_video_id }}" class="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-blue-500 hover:bg-blue-400 text-white transition-all shadow-lg shadow-blue-500/25">
                                 Next Lesson
                                 <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                             </a>
@@ -193,62 +161,50 @@
                     </div>
                 </div>
 
-                <!-- Questions Graded Review -->
-                <div class="mb-6">
-                    <h2 class="text-body-lg font-body-lg font-medium text-on-surface mb-4">Question Breakdown</h2>
+                <!-- Question Breakdown -->
+                <div>
+                    <h2 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-4">Question Breakdown</h2>
                     <div class="flex flex-col gap-4">
                         {% for detail in results.details %}
-                        <div class="bg-surface border border-border rounded-xl p-6 shadow-sm">
-                            <div class="flex gap-4 items-start mb-4">
-                                <span class="material-symbols-outlined {% if detail.is_correct %}text-success{% else %}text-danger{% endif %} text-[26px] shrink-0 mt-0.5">
+                        <div class="glass-card rounded-2xl p-6 relative overflow-hidden">
+                            <!-- Top status bar -->
+                            <div class="absolute top-0 left-0 w-full h-0.5 {% if detail.is_correct %}bg-emerald-500{% else %}bg-rose-500{% endif %}"></div>
+
+                            <div class="flex items-start gap-4 mb-5">
+                                <span class="material-symbols-outlined text-[22px] shrink-0 mt-0.5 {% if detail.is_correct %}text-emerald-400{% else %}text-rose-400{% endif %}" style="font-variation-settings:'FILL' 1;">
                                     {% if detail.is_correct %}check_circle{% else %}cancel{% endif %}
                                 </span>
-                                <div>
-                                    <p class="font-body-lg text-body-lg text-on-surface font-semibold leading-relaxed">
-                                        {{ detail.question_text }}
-                                    </p>
-                                </div>
+                                <p class="text-base font-semibold text-slate-100 leading-relaxed">{{ detail.question_text }}</p>
                             </div>
-                            
-                            <!-- Graded Options Review -->
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
-                                {% for opt_key, opt_val in detail.options.items() %}
-                                <div class="p-4 rounded-lg border text-sm flex items-center gap-3
-                                    {% if detail.correct_answer == opt_key %}
-                                        border-success bg-success/5 text-success
-                                    {% elif detail.selected_answer == opt_key and not detail.is_correct %}
-                                        border-danger bg-danger/5 text-danger
-                                    {% else %}
-                                        border-border bg-surface-container-low text-on-surface-variant
-                                    {% endif %}">
-                                    
-                                    <!-- Option Key Badge -->
-                                    <span class="w-5 h-5 rounded-full flex items-center justify-center font-bold text-xs shrink-0
-                                        {% if detail.correct_answer == opt_key %}
-                                            bg-success text-on-secondary
-                                        {% elif detail.selected_answer == opt_key and not detail.is_correct %}
-                                            bg-danger text-on-secondary
-                                        {% else %}
-                                            bg-surface-variant text-outline-variant
-                                        {% endif %}">
-                                        {{ opt_key }}
-                                    </span>
-                                    
-                                    <span class="font-code-md text-code-md">{{ opt_val }}</span>
 
-                                    <!-- Feedback Icon -->
-                                    {% if detail.correct_answer == opt_key %}
-                                    <span class="material-symbols-outlined text-[16px] ml-auto shrink-0">check</span>
-                                    {% elif detail.selected_answer == opt_key and not detail.is_correct %}
-                                    <span class="material-symbols-outlined text-[16px] ml-auto shrink-0">close</span>
-                                    {% endif %}
+                            <!-- Options Grid -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {% for opt_key, opt_val in detail.options.items() %}
+                                {% if detail.correct_answer == opt_key %}
+                                <div class="option-correct border rounded-xl p-4 flex items-center gap-3">
+                                    <span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[11px] font-black shrink-0">{{ opt_key }}</span>
+                                    <span class="text-sm font-medium text-emerald-300 font-mono flex-1">{{ opt_val }}</span>
+                                    <span class="material-symbols-outlined text-emerald-400 text-[16px] shrink-0">check</span>
                                 </div>
+                                {% elif detail.selected_answer == opt_key and not detail.is_correct %}
+                                <div class="option-wrong border rounded-xl p-4 flex items-center gap-3">
+                                    <span class="w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center text-[11px] font-black shrink-0">{{ opt_key }}</span>
+                                    <span class="text-sm font-medium text-rose-300 font-mono flex-1">{{ opt_val }}</span>
+                                    <span class="material-symbols-outlined text-rose-400 text-[16px] shrink-0">close</span>
+                                </div>
+                                {% else %}
+                                <div class="option-neutral border rounded-xl p-4 flex items-center gap-3">
+                                    <span class="w-6 h-6 rounded-full bg-white/5 text-slate-400 flex items-center justify-center text-[11px] font-black shrink-0">{{ opt_key }}</span>
+                                    <span class="text-sm text-slate-400 font-mono flex-1">{{ opt_val }}</span>
+                                </div>
+                                {% endif %}
                                 {% endfor %}
                             </div>
                         </div>
                         {% endfor %}
                     </div>
                 </div>
+
             </div>
         </main>
     </div>

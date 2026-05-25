@@ -98,13 +98,14 @@ class QuizQuestion(Base):
     correct_answer = Column(String(1), nullable=False)  # 'A', 'B', 'C', or 'D'
     difficulty = Column(Integer, nullable=False)  # 1 | 2 | 3
     topic_id = Column(Integer, ForeignKey('topics.id'), nullable=False)
+    video_id = Column(Integer, ForeignKey('videos.id'), nullable=True)  # None = topic-level, set = video-specific
 
     # Relationships
     topic = relationship('Topic', back_populates='questions')
     attempts = relationship('QuizAttempt', back_populates='question', cascade='all, delete-orphan')
 
     def __repr__(self) -> str:
-        return f"<QuizQuestion(id={self.id}, topic_id={self.topic_id}, difficulty={self.difficulty})>"
+        return f"<QuizQuestion(id={self.id}, topic_id={self.topic_id}, video_id={self.video_id}, difficulty={self.difficulty})>"
 
 
 class QuizAttempt(Base):

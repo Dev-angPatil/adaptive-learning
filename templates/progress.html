@@ -4,312 +4,289 @@
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>PyAdapt - Your Progress</title>
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com" rel="preconnect"/>
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
-    <!-- Material Symbols -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
     <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "on-background": "#e1e2eb",
-                    "on-secondary": "#263143",
-                    "primary-fixed-dim": "#acc7ff",
-                    "border": "#30363d",
-                    "secondary-container": "#3e495d",
-                    "tertiary-container": "#d37b02",
-                    "on-tertiary-fixed": "#2d1600",
-                    "on-primary-fixed": "#001a40",
-                    "inverse-on-surface": "#2e3037",
-                    "on-surface": "#e1e2eb",
-                    "success": "#22c55e",
-                    "outline": "#8c909e",
-                    "tertiary-fixed-dim": "#ffb873",
-                    "tertiary-fixed": "#ffdcbf",
-                    "primary": "#acc7ff",
-                    "on-secondary-fixed-variant": "#3c475a",
-                    "secondary-fixed": "#d8e3fb",
-                    "error-container": "#93000a",
-                    "surface-container-highest": "#32353c",
-                    "primary-fixed": "#d7e2ff",
-                    "surface-container-lowest": "#0b0e14",
-                    "primary-container": "#508ff8",
-                    "tertiary": "#ffb873",
-                    "on-primary": "#002f68",
-                    "inverse-primary": "#005bbf",
-                    "on-tertiary": "#4b2800",
-                    "surface-bright": "#373940",
-                    "secondary": "#bcc7de",
-                    "on-primary-fixed-variant": "#004492",
-                    "on-secondary-container": "#aeb9d0",
-                    "background": "#0f1117",
-                    "inverse-surface": "#e1e2eb",
-                    "secondary-fixed-dim": "#bcc7de",
-                    "surface-dim": "#11131a",
-                    "on-secondary-fixed": "#111c2d",
-                    "surface-container-high": "#272a31",
-                    "surface-container": "#1d2026",
-                    "on-surface-variant": "#c2c6d5",
-                    "on-primary-container": "#00285b",
-                    "on-error": "#690005",
-                    "outline-variant": "#424753",
-                    "surface-tint": "#acc7ff",
-                    "surface-variant": "#32353c",
-                    "warning": "#f59e0b",
-                    "on-error-container": "#ffdad6",
-                    "on-tertiary-container": "#412200",
-                    "on-tertiary-fixed-variant": "#6a3b00",
-                    "danger": "#ef4444",
-                    "surface-container-low": "#191c22",
-                    "surface": "#161b22",
-                    "error": "#ffb4ab"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.125rem",
-                    "lg": "0.25rem",
-                    "xl": "0.5rem",
-                    "full": "0.75rem"
-            },
-            "spacing": {
-                    "margin": "32px",
-                    "sidebar-width": "64px",
-                    "stack-gap": "16px",
-                    "gutter": "24px",
-                    "content-max-width": "1200px"
-            },
-            "fontFamily": {
-                    "body-md": ["Geist"],
-                    "label-sm": ["JetBrains Mono"],
-                    "headline-lg": ["Geist"],
-                    "body-lg": ["Geist"],
-                    "headline-md": ["Geist"],
-                    "code-md": ["JetBrains Mono"]
-            },
-            "fontSize": {
-                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
-                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
-                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
-                    "code-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}]
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            blue: "#508ff8",
+                            green: "#22c55e",
+                            purple: "#a855f7",
+                            darkBg: "#0a0c10",
+                            glassCard: "rgba(255, 255, 255, 0.03)",
+                            glassBorder: "rgba(255, 255, 255, 0.08)"
+                        }
+                    },
+                    fontFamily: {
+                        sans: ["Geist", "sans-serif"],
+                        mono: ["JetBrains Mono", "monospace"]
+                    }
+                }
             }
-          }
         }
-      }
     </script>
     <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        body {
+            background: radial-gradient(circle at 10% 20%, rgba(80, 143, 248, 0.08) 0%, transparent 45%),
+                        radial-gradient(circle at 90% 80%, rgba(34, 197, 94, 0.08) 0%, transparent 45%),
+                        #080a0f;
+            font-family: 'Geist', sans-serif;
         }
-        .material-symbols-outlined.filled {
-            font-variation-settings: 'FILL' 1;
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
         }
-        
-        .chart-grid {
-            background-image: 
-                linear-gradient(to right, #30363d 1px, transparent 1px),
-                linear-gradient(to bottom, #30363d 1px, transparent 1px);
-            background-size: 40px 40px;
-            background-position: bottom left;
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.25);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.01);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
     </style>
 </head>
-<body class="bg-background text-on-background min-h-screen flex selection:bg-primary-container selection:text-on-primary-container">
-    <!-- SideNavBar -->
-    <nav class="fixed left-0 top-0 h-full flex flex-col justify-between py-margin z-40 bg-surface-container-lowest dark:bg-surface-container-lowest w-sidebar-width border-r border-border dark:border-border">
-        <div class="flex flex-col items-center gap-6">
-            <!-- Brand -->
-            <div class="text-headline-md font-headline-md font-black text-primary dark:text-primary tracking-tighter mb-8" title="PyAdapt Python Learning">
-                P
+<body class="text-slate-100 min-h-screen w-full flex overflow-hidden">
+
+    <!-- SideNavBar (Glassmorphic) -->
+    <nav class="w-20 flex flex-col justify-between py-8 items-center border-r border-white/5 bg-white/[0.01] backdrop-blur-md z-40 shrink-0">
+        <div class="flex flex-col items-center gap-8 w-full">
+            <!-- Brand Logo -->
+            <div class="text-2xl font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
+                PyA
             </div>
             <!-- Navigation Items -->
-            <!-- Dashboard -->
-            <a class="{% if active_tab == 'dashboard' %}text-primary dark:text-primary font-bold border-l-2 border-primary pl-2 opacity-100 scale-100 bg-surface-container-highest{% else %}text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors group{% endif %} flex flex-col items-center justify-center p-4 w-full" href="/" title="Dashboard">
-                <span class="material-symbols-outlined {% if active_tab == 'dashboard' %}text-primary{% else %}transition-transform group-hover:scale-110{% endif %}" {% if active_tab == 'dashboard' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>dashboard</span>
-            </a>
-            <!-- Current Lesson -->
-            <a class="{% if active_tab == 'lesson' %}text-primary dark:text-primary font-bold border-l-2 border-primary pl-2 opacity-100 scale-100 bg-surface-container-highest{% else %}text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors group{% endif %} flex flex-col items-center justify-center p-4 w-full" href="{% if current_focus.video_id %}/lesson/{{ current_focus.video_id }}{% else %}#{% endif %}" title="Current Lesson">
-                <span class="material-symbols-outlined {% if active_tab == 'lesson' %}text-primary{% else %}transition-transform group-hover:scale-110{% endif %}" {% if active_tab == 'lesson' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>auto_stories</span>
-            </a>
-            <!-- Progress -->
-            <a class="{% if active_tab == 'progress' %}text-primary dark:text-primary font-bold border-l-2 border-primary pl-2 opacity-100 scale-100 bg-surface-container-highest{% else %}text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors group{% endif %} flex flex-col items-center justify-center p-4 w-full" href="/progress" title="Progress">
-                <span class="material-symbols-outlined {% if active_tab == 'progress' %}text-primary{% else %}transition-transform group-hover:scale-110{% endif %}" {% if active_tab == 'progress' %}style="font-variation-settings: 'FILL' 1;"{% endif %}>leaderboard</span>
-            </a>
+            <div class="flex flex-col items-center gap-4 w-full">
+                <!-- Dashboard -->
+                <a href="/" class="p-3 rounded-xl transition-all duration-300 {% if active_tab == 'dashboard' %}bg-blue-500/10 text-blue-400 border border-blue-500/20{% else %}text-slate-400 hover:bg-white/5 hover:text-white{% endif %} group relative" title="Dashboard">
+                    <span class="material-symbols-outlined text-[24px]">dashboard</span>
+                    <span class="absolute left-full ml-4 px-2 py-1 bg-slate-900 border border-white/10 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none shadow-xl">Dashboard</span>
+                </a>
+                <!-- Current Lesson -->
+                <a href="{% if current_focus.video_id %}/lesson/{{ current_focus.video_id }}{% else %}#{% endif %}" class="p-3 rounded-xl transition-all duration-300 {% if active_tab == 'lesson' %}bg-blue-500/10 text-blue-400 border border-blue-500/20{% else %}text-slate-400 hover:bg-white/5 hover:text-white{% endif %} group relative" title="Current Lesson">
+                    <span class="material-symbols-outlined text-[24px]">auto_stories</span>
+                    <span class="absolute left-full ml-4 px-2 py-1 bg-slate-900 border border-white/10 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none shadow-xl">Current Lesson</span>
+                </a>
+                <!-- Progress Analytics -->
+                <a href="/progress" class="p-3 rounded-xl transition-all duration-300 {% if active_tab == 'progress' %}bg-blue-500/10 text-blue-400 border border-blue-500/20{% else %}text-slate-400 hover:bg-white/5 hover:text-white{% endif %} group relative" title="Progress">
+                    <span class="material-symbols-outlined text-[24px]">leaderboard</span>
+                    <span class="absolute left-full ml-4 px-2 py-1 bg-slate-900 border border-white/10 text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-50 pointer-events-none shadow-xl">Progress Analytics</span>
+                </a>
+            </div>
         </div>
-        <!-- Bottom Items -->
+        <!-- Profile -->
         <div class="flex flex-col items-center">
-            <div class="mt-4 p-2 rounded-full border border-border overflow-hidden">
-                <img alt="User Profile Avatar" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBScg0RsoWZXW-6m4WSuoSn5twpmaUHFITEJRHRwwVOBczNj1Ti_yCm4MfFKqzwGL8agK0k_laryB3OpRHMgsFhoF-LR7WlnIfi5qWW7u1SuPPi9ILV-QJdZI3yDmF_-ft_e5E2w-UfEb2DjZkJozC8nX3v2uKmrtHjRfftyOFB0Ie5O4eW2M00ECWf2mkPEzkbbLLu2bG8DfsnpFjNwgbLPqKHh6n3cGrpCKRvOvZ21K_unxguO9D2K6JmU0Lffi52arYdv9Cbk_k"/>
+            <div class="w-10 h-10 rounded-full border border-white/10 overflow-hidden shadow-inner p-0.5">
+                <img alt="User Avatar" class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBScg0RsoWZXW-6m4WSuoSn5twpmaUHFITEJRHRwwVOBczNj1Ti_yCm4MfFKqzwGL8agK0k_laryB3OpRHMgsFhoF-LR7WlnIfi5qWW7u1SuPPi9ILV-QJdZI3yDmF_-ft_e5E2w-UfEb2DjZkJozC8nX3v2uKmrtHjRfftyOFB0Ie5O4eW2M00ECWf2mkPEzkbbLLu2bG8DfsnpFjNwgbLPqKHh6n3cGrpCKRvOvZ21K_unxguO9D2K6JmU0Lffi52arYdv9Cbk_k"/>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content Canvas -->
-    <main class="flex-1 ml-sidebar-width mt-0 p-margin overflow-y-auto">
-        <div class="max-w-content-max-width mx-auto">
-            <!-- Page Header -->
-            <div class="mb-8 flex items-end justify-between">
-                <div>
-                    <h1 class="text-headline-lg font-headline-lg text-on-surface tracking-tight mb-2">Your Progress</h1>
-                    <p class="text-body-md font-body-md text-on-surface-variant">Track your mastery across core Python concepts.</p>
-                </div>
-                <div class="flex gap-4">
-                    <div class="text-right">
-                        <div class="text-label-sm font-label-sm text-on-surface-variant mb-1 uppercase tracking-wider">Overall Mastery</div>
-                        <div class="text-headline-md font-headline-md text-primary">{{ overall_mastery }}%</div>
-                    </div>
-                </div>
+    <!-- Main Workspace -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <!-- Top Glass Header -->
+        <header class="h-16 px-8 border-b border-white/5 bg-white/[0.01] backdrop-blur-md flex justify-between items-center z-30 shrink-0">
+            <div class="flex items-center gap-3">
+                <h1 class="text-xl font-bold tracking-tight text-white">Your Progress</h1>
+                <span class="text-slate-600 font-mono text-sm">/</span>
+                <span class="text-xs font-semibold uppercase tracking-widest text-slate-400 bg-white/5 px-2.5 py-1 rounded-md border border-white/5">Analytics Overview</span>
             </div>
+            <!-- Overall Mastery badge -->
+            <div class="flex items-center gap-3 bg-white/5 border border-white/5 px-4 py-1.5 rounded-xl">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Overall Course Mastery</span>
+                <span class="text-sm font-black text-emerald-400 font-mono">{{ overall_mastery }}%</span>
+            </div>
+        </header>
 
-            <!-- Main Layout Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-stack-gap">
-                <!-- Topic Mastery Grid (Left Col) -->
-                <div class="lg:col-span-8 flex flex-col gap-stack-gap">
-                    <div class="flex items-center justify-between mb-2">
-                        <h2 class="text-body-lg font-body-lg font-medium text-on-surface">Topic Mastery</h2>
-                    </div>
+        <!-- Content Area -->
+        <main class="flex-1 overflow-y-auto px-8 md:px-12 py-10">
+            <div class="max-w-6xl mx-auto flex flex-col gap-8">
+                
+                <!-- Page Top Metrics / Bento Layout -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {% for t in topics %}
-                        <!-- Card: {{ t.name }} -->
-                        <div class="{% if t.status == 'Locked' %}bg-surface-container-low opacity-60 grayscale-[50%]{% else %}bg-surface{% endif %} border border-border rounded-lg p-5 flex flex-col relative overflow-hidden group hover:border-primary-container/50 transition-colors">
-                            <div class="absolute top-0 left-0 w-full h-1 bg-surface-container-high">
-                                <div class="h-full {% if t.status == 'Mastered' %}bg-success{% else %}bg-primary{% endif %}" style="width: {{ t.mastery_percentage }}%"></div>
-                            </div>
-                            
-                            <div class="flex justify-between items-start mb-4 mt-2">
-                                <div class="flex items-center gap-2">
-                                    {% if t.status == 'Mastered' %}
-                                    <span class="material-symbols-outlined text-success">check_circle</span>
-                                    {% elif t.status == 'In Progress' %}
-                                    <span class="material-symbols-outlined text-primary animate-pulse">rotate_right</span>
-                                    {% elif t.status == 'Locked' %}
-                                    <span class="material-symbols-outlined text-on-surface-variant">lock</span>
-                                    {% else %}
-                                    <span class="material-symbols-outlined text-outline">circle</span>
-                                    {% endif %}
-                                    <h3 class="text-body-md font-body-md font-medium {% if t.status == 'Locked' %}text-on-surface-variant{% else %}text-on-surface{% endif %}">{{ t.name }}</h3>
+                    <!-- Left: Topics Mastery Grid (Span 8) -->
+                    <div class="lg:col-span-8 flex flex-col gap-4">
+                        <h2 class="text-base font-bold text-slate-400 uppercase tracking-wider mb-2">Module Mastery status</h2>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {% for t in topics %}
+                            <!-- Glass Card: Topic -->
+                            <div class="glass-card rounded-2xl p-5 relative overflow-hidden flex flex-col justify-between 
+                                {% if t.status == 'Locked' %}opacity-60 saturate-[0.55] border-white/5 bg-white/[0.005]{% endif %}">
+                                
+                                <!-- Top mastery line indicator -->
+                                <div class="absolute top-0 left-0 w-full h-1 bg-white/5">
+                                    <div class="h-full {% if t.status == 'Mastered' %}bg-emerald-500{% else %}bg-blue-500{% endif %}" style="width: {{ t.mastery_percentage }}%"></div>
                                 </div>
-                                <span class="font-label-sm text-label-sm px-2 py-0.5 rounded border 
-                                    {% if t.difficulty == 1 %}border-success/30 text-success bg-success/10
-                                    {% elif t.difficulty == 2 %}border-warning/30 text-warning bg-warning/10
-                                    {% else %}border-danger/30 text-danger bg-danger/10{% endif %}">
-                                    {% if t.difficulty == 1 %}Beginner
-                                    {% elif t.difficulty == 2 %}Intermediate
-                                    {% else %}Advanced{% endif %}
-                                </span>
+
+                                <div class="flex justify-between items-start mb-3 mt-1">
+                                    <div class="flex items-center gap-2.5 min-w-0">
+                                        {% if t.status == 'Mastered' %}
+                                            <span class="material-symbols-outlined text-emerald-400 text-[20px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                                        {% elif t.status == 'In Progress' %}
+                                            <span class="material-symbols-outlined text-blue-400 text-[20px] animate-spin">sync</span>
+                                        {% elif t.status == 'Locked' %}
+                                            <span class="material-symbols-outlined text-slate-600 text-[20px]">lock</span>
+                                        {% else %}
+                                            <span class="material-symbols-outlined text-slate-400 text-[20px]">hourglass_empty</span>
+                                        {% endif %}
+                                        <h3 class="text-sm font-bold text-slate-200 truncate">{{ t.name }}</h3>
+                                    </div>
+                                    <span class="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border 
+                                        {% if t.difficulty == 1 %}text-emerald-400 border-emerald-500/15 bg-emerald-500/5
+                                        {% elif t.difficulty == 2 %}text-amber-400 border-amber-500/15 bg-amber-500/5
+                                        {% else %}text-rose-400 border-rose-500/15 bg-rose-500/5{% endif %}">
+                                        {% if t.difficulty == 1 %}Beginner
+                                        {% elif t.difficulty == 2 %}Intermediate
+                                        {% else %}Advanced{% endif %}
+                                    </span>
+                                </div>
+
+                                <p class="text-xs text-slate-400 leading-relaxed mb-4 flex-1 line-clamp-2">{{ t.description }}</p>
+
+                                <div class="flex justify-between items-center mt-auto border-t border-white/5 pt-3">
+                                    <span class="text-[10px] font-bold uppercase tracking-wide
+                                        {% if t.status == 'Mastered' %}text-emerald-400
+                                        {% elif t.status == 'In Progress' %}text-blue-400
+                                        {% else %}text-slate-500{% endif %}">
+                                        {{ t.status }}
+                                    </span>
+                                    <span class="text-xs font-bold text-slate-300 font-mono">{{ t.mastery_percentage }}% Mastery</span>
+                                </div>
                             </div>
-                            
-                            <p class="text-code-md font-code-md text-on-surface-variant mb-4 flex-1">{{ t.description }}</p>
-                            
-                            <div class="flex items-center justify-between mt-auto">
-                                <span class="text-label-sm font-label-sm {% if t.status == 'Mastered' %}text-success{% elif t.status == 'In Progress' %}text-primary{% else %}text-on-surface-variant{% endif %}">
-                                    {{ t.status }}
-                                </span>
-                                <span class="text-label-sm font-label-sm text-on-surface-variant">{{ t.mastery_percentage }}%</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Right: Performance & Accuracy (Span 4) -->
+                    <div class="lg:col-span-4 flex flex-col gap-6">
+                        <!-- Overview Card -->
+                        <div class="glass-card rounded-2xl p-6">
+                            <h2 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Analytics Overview</h2>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-white/[0.02] border border-white/5 p-4 rounded-xl">
+                                    <div class="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Completed</div>
+                                    <div class="text-lg font-black text-white mt-1">{{ completed_topics_count }} / {{ topics|length }}</div>
+                                </div>
+                                <div class="bg-white/[0.02] border border-white/5 p-4 rounded-xl">
+                                    <div class="text-[9px] font-bold text-slate-500 uppercase tracking-wider">Quiz Trend</div>
+                                    <div class="text-lg font-black text-white mt-1 flex items-center gap-1">
+                                        {% if trend_status == 'improving' %}
+                                            <span class="material-symbols-outlined text-emerald-400 text-xl font-bold">trending_up</span>
+                                            <span class="text-sm font-bold text-emerald-400">Up</span>
+                                        {% elif trend_status == 'declining' %}
+                                            <span class="material-symbols-outlined text-rose-400 text-xl font-bold">trending_down</span>
+                                            <span class="text-sm font-bold text-rose-400">Down</span>
+                                        {% else %}
+                                            <span class="material-symbols-outlined text-slate-400 text-xl font-bold">trending_flat</span>
+                                            <span class="text-sm font-bold text-slate-400">Flat</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- Performance Chart Image Card -->
+                        <div class="glass-card rounded-2xl p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="text-xs font-bold text-slate-500 uppercase tracking-widest">Performance Timeline</h2>
+                                <span class="material-symbols-outlined text-slate-500 text-[18px]">query_stats</span>
+                            </div>
+                            <div class="w-full flex justify-center items-center py-2">
+                                {% if has_chart %}
+                                    <img src="/static/progress_chart.png?cache_bust={{ timestamp }}" class="w-full h-auto object-contain rounded-xl border border-white/10 shadow-lg" alt="Quiz Performance Timeline"/>
+                                {% else %}
+                                    <div class="w-full h-[200px] flex flex-col items-center justify-center text-center bg-white/[0.01] border border-white/5 rounded-xl p-6 text-slate-500 text-xs">
+                                        <span class="material-symbols-outlined text-3xl mb-2 text-slate-600">bar_chart</span>
+                                        <span>No quiz attempts recorded yet.<br>Complete quizzes to display progress statistics.</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Bottom learning pathway visualization -->
+                <div class="glass-panel rounded-2xl p-6 relative overflow-hidden">
+                    <h2 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-6">Horizontal Learning Flow</h2>
+                    
+                    <div class="flex items-center w-full overflow-x-auto pb-4 gap-2 hide-scrollbar">
+                        {% for t in topics %}
+                        <!-- Node in path -->
+                        <div class="flex flex-col items-center min-w-[120px] shrink-0 relative group">
+                            {% if t.status == 'In Progress' %}
+                                <div class="absolute top-0 w-12 h-12 rounded-full bg-blue-500/20 animate-ping"></div>
+                            {% endif %}
+                            
+                            <div class="w-12 h-12 rounded-full border-2 
+                                {% if t.status == 'Mastered' %}border-emerald-500 bg-emerald-500/10 text-emerald-400
+                                {% elif t.status == 'In Progress' %}border-blue-400 bg-blue-500/15 text-blue-400
+                                {% else %}border-white/5 bg-white/[0.01] text-slate-600 opacity-60{% endif %} 
+                                flex items-center justify-center mb-2.5 relative z-10 transition-transform group-hover:scale-110">
+                                <span class="material-symbols-outlined text-lg">
+                                    {% if t.name == 'Introduction & Setup' or t.name == 'Basic Syntax' %}code
+                                    {% elif t.name == 'Functions & Modular Coding' or t.name == 'Functions' %}functions
+                                    {% elif t.name == 'Python Data Structures' or t.name == 'Lists & Tuples' %}format_list_bulleted
+                                    {% elif t.name == 'Object-Oriented Programming (OOP)' %}view_in_ar
+                                    {% elif t.name == 'File I/O & Exceptions' %}folder_open
+                                    {% else %}school{% endif %}
+                                </span>
+                            </div>
+                            <span class="text-[10px] font-bold {% if t.status == 'In Progress' %}text-blue-400{% else %}text-slate-400{% endif %} whitespace-nowrap">{{ t.name }}</span>
+                            {% if t.status == 'In Progress' %}
+                                <span class="text-[8px] font-black uppercase text-blue-400 tracking-wider mt-0.5">Active</span>
+                            {% endif %}
+                        </div>
+
+                        {% if not loop.last %}
+                        <!-- Path link line -->
+                        <div class="flex-1 h-0.5 min-w-[40px] mx-1 relative top-[-14px]
+                            {% if t.status == 'Mastered' and topics[loop.index].status == 'Mastered' %}bg-emerald-500/40
+                            {% elif t.status == 'Mastered' and topics[loop.index].status == 'In Progress' %}bg-gradient-to-r from-emerald-500/40 to-blue-500/40
+                            {% else %}bg-white/5{% endif %}">
+                        </div>
+                        {% endif %}
                         {% endfor %}
                     </div>
                 </div>
 
-                <!-- Right Column (Performance Stats and Chart) -->
-                <div class="lg:col-span-4 flex flex-col gap-stack-gap">
-                    <!-- Metrics Card -->
-                    <div class="bg-surface border border-border rounded-lg p-5">
-                        <h2 class="text-body-lg font-body-lg font-medium text-on-surface mb-4">Analytics Overview</h2>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-surface-container-low p-3 rounded border border-border">
-                                <div class="text-[10px] font-label-sm text-on-surface-variant uppercase">Topics Done</div>
-                                <div class="text-headline-md font-headline-md text-primary mt-1">{{ completed_topics_count }} / {{ topics|length }}</div>
-                            </div>
-                            <div class="bg-surface-container-low p-3 rounded border border-border">
-                                <div class="text-[10px] font-label-sm text-on-surface-variant uppercase">Quiz Trend</div>
-                                <div class="text-headline-md font-headline-md text-primary mt-1 flex items-center gap-1">
-                                    {% if trend_status == 'improving' %}
-                                    <span class="material-symbols-outlined text-success">trending_up</span>
-                                    <span class="text-base text-success">Up</span>
-                                    {% elif trend_status == 'declining' %}
-                                    <span class="material-symbols-outlined text-danger">trending_down</span>
-                                    <span class="text-base text-danger">Down</span>
-                                    {% else %}
-                                    <span class="material-symbols-outlined text-outline">trending_flat</span>
-                                    <span class="text-base text-outline-variant">Flat</span>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+        </main>
+    </div>
 
-                    <!-- Quiz Accuracy Chart -->
-                    <div class="bg-surface border border-border rounded-lg p-5 flex flex-col">
-                        <div class="flex items-center justify-between mb-4">
-                            <h2 class="text-body-lg font-body-lg font-medium text-on-surface">Performance Chart</h2>
-                            <span class="material-symbols-outlined text-on-surface-variant text-lg">timeline</span>
-                        </div>
-                        <div class="w-full flex justify-center items-center py-2">
-                            {% if has_chart %}
-                            <img src="/static/progress_chart.png?cache_bust={{ timestamp }}" class="w-full h-auto object-contain rounded border border-border" alt="Quiz Performance Timeline"/>
-                            {% else %}
-                            <div class="w-full h-[220px] flex flex-col items-center justify-center text-center bg-surface-container-low border border-border rounded p-4 text-on-surface-variant text-sm">
-                                <span class="material-symbols-outlined text-4xl mb-2 text-outline-variant">analytics</span>
-                                <span>No quiz attempts recorded yet.<br>Complete quizzes to display timeline stats.</span>
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bottom Row: Learning Path -->
-                <div class="lg:col-span-12 mt-4">
-                    <div class="bg-surface border border-border rounded-lg p-6">
-                        <h2 class="text-body-lg font-body-lg font-medium text-on-surface mb-6">Current Learning Path</h2>
-                        <div class="flex items-center w-full max-w-4xl mx-auto overflow-x-auto pb-4 hide-scrollbar">
-                            {% for t in topics %}
-                            <!-- Node: {{ t.name }} -->
-                            <div class="flex flex-col items-center min-w-[120px] shrink-0 relative group">
-                                {% if t.status == 'In Progress' %}
-                                <div class="absolute top-0 w-12 h-12 rounded-full bg-primary/30 animate-ping"></div>
-                                {% endif %}
-                                <div class="w-12 h-12 rounded-full border-2 
-                                    {% if t.status == 'Mastered' %}border-success bg-success/10 text-success
-                                    {% elif t.status == 'In Progress' %}border-primary bg-primary/20 text-primary
-                                    {% else %}border-border bg-surface-container text-on-surface-variant opacity-50{% endif %} 
-                                    flex items-center justify-center mb-2 relative z-10 transition-transform group-hover:scale-110">
-                                    <span class="material-symbols-outlined text-xl">
-                                        {% if t.name == 'Basic Syntax' %}code
-                                        {% elif t.name == 'Functions' %}functions
-                                        {% elif t.name == 'Lists & Tuples' %}format_list_bulleted
-                                        {% else %}category{% endif %}
-                                    </span>
-                                </div>
-                                <span class="text-label-sm font-label-sm {% if t.status == 'In Progress' %}text-primary font-bold{% else %}text-on-surface-variant{% endif %} whitespace-nowrap">{{ t.name }}</span>
-                                {% if t.status == 'In Progress' %}
-                                <span class="absolute -bottom-5 text-[9px] font-label-sm text-primary uppercase tracking-widest">Active</span>
-                                {% endif %}
-                            </div>
-
-                            {% if not loop.last %}
-                            <!-- Connector -->
-                            <div class="flex-1 h-[2px] min-w-[50px] mx-2 relative top-[-12px]
-                                {% if t.status == 'Mastered' and topics[loop.index].status == 'Mastered' %}bg-success
-                                {% elif t.status == 'Mastered' and topics[loop.index].status == 'In Progress' %}bg-gradient-to-r from-success to-primary
-                                {% else %}bg-border{% endif %}">
-                            </div>
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </div> <!-- End Grid -->
-        </div>
-    </main>
     <style>
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
